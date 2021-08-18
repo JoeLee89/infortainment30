@@ -1,0 +1,1 @@
+adiGpioGetPort(0xFF)
