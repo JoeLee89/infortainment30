@@ -14,4 +14,4 @@ while true; do
   printf "Press enter key to test or [q] key to skip.. \n"
   read -p "" input
 done
-printf 'd'
+printf 'ddd'
