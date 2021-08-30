@@ -10,7 +10,7 @@ GetSetPin_bsec(){
     if [ "$input" == "q" ]; then
         break
     fi
-      sudo ./idll-test.exe --DO_PIN_NUM $i --MSENSE_PIN_NUM $m   -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_BACC_SetPin
+      sudo ./idll-test --DO_PIN_NUM $i --MSENSE_PIN_NUM $m   -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_BACC_SetPin
       (( m++ ))
 done
 }
@@ -24,7 +24,7 @@ GetSetPort_bsec(){
     if [ "$input" == "q" ]; then
         break
     fi
-      sudo ./idll-test.exe --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_BACC_SetPort
+      sudo ./idll-test --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_BACC_SetPort
   done
 }
 
@@ -40,7 +40,7 @@ GetSetPin_SA3(){
       printcolor r "going to test hard meter (9-16)"
       read -p "enter key to test..." continue
     fi
-    launch_command "sudo ./idll-test.exe --PIN_VAL $i --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_ByPin"
+    launch_command "sudo ./idll-test --PIN_VAL $i --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_ByPin"
     compare_result "$result" "passed"
   done
 
@@ -53,7 +53,7 @@ SetGetPort_SA3(){
   hex=$((2#1))
 
   while true; do
-    launch_command "sudo ./idll-test.exe --PORT_VAL $hex --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_ByPort"
+    launch_command "sudo ./idll-test --PORT_VAL $hex --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_ByPort"
     compare_result "$result" "passed"
     hex=$((hex<<1))
 
@@ -71,7 +71,7 @@ SetGetPort_SA3(){
           after=$( date +%s --date="+1 minute")
           while true; do
             now=$(date +%s)
-            launch_command "sudo ./idll-test.exe --PORT_VAL 65535 --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_ByPort"
+            launch_command "sudo ./idll-test --PORT_VAL 65535 --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_ByPort"
             compare_result "$result" "passed"
             if [[ "$now" > $after ]]; then
               break
@@ -90,7 +90,7 @@ GetSetPin_SCXX(){
 
   hex=$((2#1))
   for (( i = 0; i < 8; i++ )); do
-    launch_command "sudo ./idll-test.exe --PIN_VAL $i --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_ByPin"
+    launch_command "sudo ./idll-test --PIN_VAL $i --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_ByPin"
     compare_result "$result" "passed"
   done
 
@@ -103,7 +103,7 @@ SetGetPort_SCXX(){
   hex=$((2#1))
 
   while true; do
-    launch_command "sudo ./idll-test.exe --PORT_VAL $hex --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_ByPort"
+    launch_command "sudo ./idll-test --PORT_VAL $hex --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_ByPort"
     compare_result "$result" "passed"
     hex=$((hex<<1))
 
@@ -116,7 +116,7 @@ SetGetPort_SCXX(){
   after=$( date +%s --date="+1 minute")
   while true; do
       now=$(date +%s)
-      launch_command "sudo ./idll-test.exe --PORT_VAL 255 --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_ByPort"
+      launch_command "sudo ./idll-test --PORT_VAL 255 --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_ByPort"
       compare_result "$result" "passed"
       if [[ "$now" > $after ]]; then
         break
@@ -142,12 +142,12 @@ meter_detection(){
         for (( l = 0; l < $meter_total_pin; l++ )); do
           title b "Now get detection ( PORT ) value"
 
-          launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_Detection_ByPort"
+          launch_command "sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPort"
           compare_result "$result" "$expected_getport_plug_value"
 
           printf "\n\n"
           title b "Now get detection ( PIN ) value"
-          launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_Detection_ByPin"
+          launch_command "sudo ./idll-test --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPin"
           compare_result "$result" "pin: $l, status: true"
         done
 
@@ -164,11 +164,11 @@ meter_detection(){
 
         for (( l = 0; l < $meter_total_pin; l++ )); do
           title b "Now get detection ( PORT ) value"
-          launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_Detection_ByPort"
+          launch_command "sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPort"
           compare_result "$result" "0x0"
 
           title b "Now get detection ( PIN ) value"
-          launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_Detection_ByPin"
+          launch_command "sudo ./idll-test --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPin"
           compare_result "$result" "pin: $l, status: false"
         done
 
@@ -213,12 +213,12 @@ meter_detection_loop(){
 
         for (( l = 0; l < $meter_total_pin; l++ )); do
           title b "Now get detection ( PORT ) value"
-          launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_Detection_ByPort"
+          launch_command "sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPort"
           compare_result "$result" "$expected_getport_plug_value"
 
           printf "\n\n"
           title b "Now get detection ( PIN ) value"
-          launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_Detection_ByPin"
+          launch_command "sudo ./idll-test --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPin"
           compare_result "$result" "pin: $l, status: true"
 
         done
@@ -240,11 +240,11 @@ meter_detection_loop(){
 
         for (( l = 0; l < $meter_total_pin; l++ )); do
           title b "Now get detection ( PORT ) value"
-          launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_Detection_ByPort"
+          launch_command "sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPort"
           compare_result "$result" "0x0"
 
           title b "Now get detection ( PIN ) value"
-          launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_Detection_ByPin"
+          launch_command "sudo ./idll-test --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPin"
           compare_result "$result" "pin: $l, status: false"
         done
 
@@ -262,14 +262,14 @@ meter_detection_loop(){
 #
 #increment_port(){
 #
-##  start /B /wait idll-test --PORT_VAL 0x1FF --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_ByPort
+##  start /B /wait idll-test --PORT_VAL 0x1FF --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_ByPort
 #  read -p "How many hard meter support to your project: " total_port
 #  read -p "How many counting on each meter: " increment_number
 #  l=0
 #  for (( i = 0; i < 6; i++ )); do
 #      m=$((2**$i))
 #      l=$((m+l))
-#      launch_command "sudo ./idll-test.exe --PORT_VAL $l --HM-Int-Count $increment_number -- --EBOARD_TYPE EBOARD_ADi_SA3X --section HardMeter_ByPort"
+#      launch_command "sudo ./idll-test --PORT_VAL $l --HM-Int-Count $increment_number -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_ByPort"
 #      compare_result "$result" "adiHardMeterIncrementCounters: $increment_number"
 #      compare_result "$result" "adiHardMeterIncrementCounters Port: $(echo "obase=16;$l|bc")"
 #

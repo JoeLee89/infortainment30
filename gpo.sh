@@ -34,10 +34,10 @@ Blink() {
   #test basic blink / period test
   title b "Reset blinking function...   reset all port to high, before test... "
   if [ "$1" == "sa3" ]; then
-    launch_command "sudo ./idll-test.exe --PORT_VAL 65535 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort"
+    launch_command "sudo ./idll-test --PORT_VAL 65535 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort"
     compare_result "$result" "Port value: 65535"
   else
-    sudo ./idll-test.exe --PORT_VAL 4294967295 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort
+    sudo ./idll-test --PORT_VAL 4294967295 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort
   fi
 
   title b "Change DUTY CYCLE value"
@@ -51,7 +51,7 @@ Blink() {
       printf "${COLOR_BLUE_WD}period (SCxx/SA3 : 0/1=disable blinking): $period = $scxx ms ${COLOR_REST}\n"
       read -p "enter key to continue above test..." continue
 
-      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD $period --DUTY_CYCLE $duty_cyclell -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink"
+      launch_command "sudo ./idll-test --PIN_NUM $all --PERIOD $period --DUTY_CYCLE $duty_cyclell -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink"
       if [[ "$result" =~ "failed" && "$result" =~ "nReadDutyCycle == nDutyCycle" && "$result" =~ "Duty cycle: $duty_cyclell" ]]; then
         printcolor g "============================================"
         printcolor g "Result PASS include : Duty cycle: $duty_cyclell"
@@ -92,7 +92,7 @@ Blink() {
       read -p "enter key to continue above test..." continue
 
 
-      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD $perioddd --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink"
+      launch_command "sudo ./idll-test --PIN_NUM $all --PERIOD $perioddd --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink"
       if [[ "$result" =~ "failed" && "$result" =~ "nReadDutyCycle == nDutyCycle" && "$result" =~ "Period: $perioddd" ]]; then
         printcolor g "============================================"
         printcolor g "Result PASS include : Period: $perioddd"
@@ -116,14 +116,14 @@ Blink() {
     printcolor r "(SCxx/SA3) LED: $all should be back to solid on as it's set port before ..."
     printcolor r "(LEC1) LED: $all won't keep its original state, it on/off randomly ..."
     read -p "enter key to continue..." continue
-    print_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD 0 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink"
-    sudo ./idll-test.exe --PIN_NUM $all --PERIOD 0 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink
+    print_command "sudo ./idll-test --PIN_NUM $all --PERIOD 0 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink"
+    sudo ./idll-test --PIN_NUM $all --PERIOD 0 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink
 
   done
 
   title b "All LED should be OFF"
   read -p "enter key to continue..." continue
-  sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort
+  sudo ./idll-test --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort
 
 
 }
@@ -133,7 +133,7 @@ repeat_blink(){
     random_period=$(shuf -i 2-65535 -n 1)
     random_duty=$(shuf -i 1-99 -n 1)
     random_pin=$(shuf -i 0-$led_amount -n 1)
-    launch_command "sudo ./idll-test.exe --PIN_NUM $random_pin --PERIOD $random_period --DUTY_CYCLE $random_duty -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink"
+    launch_command "sudo ./idll-test --PIN_NUM $random_pin --PERIOD $random_period --DUTY_CYCLE $random_duty -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink"
 #    compare_result "$result" "Period: $random_period"
 #    compare_result "$result" "Duty cycle: $random_duty"
     if [[ "$result" =~ "failed" && "$result" =~ "nReadDutyCycle == nDutyCycle"  ]]; then
@@ -151,8 +151,8 @@ repeat_blink(){
 
     fi
   done
-#  sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort
-#  sudo ./idll-test.exe --PIN_NUM 65535 --PERIOD 0 --DUTY_CYCLE 0 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink
+#  sudo ./idll-test --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort
+#  sudo ./idll-test --PIN_NUM 65535 --PERIOD 0 --DUTY_CYCLE 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink
 }
 
 #===============================================================
@@ -224,13 +224,13 @@ SetPort() {
 
   for i in ${num_actual[*]}; do
     printcolor r $i
-    print_command "sudo ./idll-test.exe --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort"
-    launch_command "sudo ./idll-test.exe --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort"
+    print_command "sudo ./idll-test --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort"
+    launch_command "sudo ./idll-test --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort"
     compare_result "$result" "Port value: $i"
     sleep 1
   done
 
-  sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort
+  sudo ./idll-test --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort
   title b "Now will loop 1000 times to check if the set/get port are the same"
   read -p "input [q] to skip or enter to test..." input
 
@@ -239,11 +239,11 @@ SetPort() {
       random=$(shuf -i 0-$((${#num_actual[@]}-1)) -n 1)
       printcolor y "random=$random"
 
-      launch_command "sudo ./idll-test.exe --PORT_VAL ${num_actual[$random]} -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort"
+      launch_command "sudo ./idll-test --PORT_VAL ${num_actual[$random]} -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort"
       compare_result "$result" "Port value: ${num_actual[$random]}"
     done
     #reset all port to light off
-   launch_command "sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort"
+   launch_command "sudo ./idll-test --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort"
   fi
 
 }
@@ -263,10 +263,10 @@ SetPin() {
   fi
 
   for all in $(seq 0 $num_pin); do
-    launch_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPin"
+    launch_command "sudo ./idll-test --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPin"
     compare_result "$result" "Pin number: $all, Pin value: 1"
     sleep 1
-    launch_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPin"
+    launch_command "sudo ./idll-test --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPin"
     compare_result "$result" "Pin number: $all, Pin value: 0"
   done
 
@@ -276,13 +276,13 @@ SetPin() {
   if [ "$input" != "q" ]; then
     for (( i = 0; i < 1000; i++ )); do
       random=$(shuf -i 0-$num_pin -n 1)
-      launch_command "sudo ./idll-test.exe --PIN_NUM $random --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPin"
+      launch_command "sudo ./idll-test --PIN_NUM $random --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPin"
       compare_result "$result" "Pin number: $random, Pin value: 1"
-      launch_command "sudo ./idll-test.exe --PIN_NUM $random --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPin"
+      launch_command "sudo ./idll-test --PIN_NUM $random --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPin"
       compare_result "$result" "Pin number: $random, Pin value: 0"
     done
     #reset all port to light off
-    launch_command "sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort"
+    launch_command "sudo ./idll-test --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort"
   fi
 }
 
@@ -294,20 +294,20 @@ BadParameter() {
   printf "${COLOR_RED_WD}===================${COLOR_REST}\n"
   read -p "enter key to continue..." continue
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PIN_NUM 999999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPin ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PIN_NUM 999999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPin
+  printf "${COLOR_RED_WD}sudo ./idll-test --PIN_NUM 999999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPin ${COLOR_REST}\n"
+  sudo ./idll-test --PIN_NUM 999999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPin
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PIN_NUM 1 --PIN_VAL dd -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPin ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PIN_NUM 1 --PIN_VAL dd -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPin
+  printf "${COLOR_RED_WD}sudo ./idll-test --PIN_NUM 1 --PIN_VAL dd -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPin ${COLOR_REST}\n"
+  sudo ./idll-test --PIN_NUM 1 --PIN_VAL dd -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPin
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PORT_VAL 999999999999999 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PORT_VAL 999999999999999 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetPort
+  printf "${COLOR_RED_WD}sudo ./idll-test --PORT_VAL 999999999999999 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort ${COLOR_REST}\n"
+  sudo ./idll-test --PORT_VAL 999999999999999 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetPort
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 65536 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 65536 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink
+  printf "${COLOR_RED_WD}sudo ./idll-test --PIN_NUM 0 --PERIOD 65536 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink ${COLOR_REST}\n"
+  sudo ./idll-test --PIN_NUM 0 --PERIOD 65536 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 0 --DUTY_CYCLE 100 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 0 --DUTY_CYCLE 100 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_SetDoLedBlink
+  printf "${COLOR_RED_WD}sudo ./idll-test --PIN_NUM 0 --PERIOD 0 --DUTY_CYCLE 100 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink ${COLOR_REST}\n"
+  sudo ./idll-test --PIN_NUM 0 --PERIOD 0 --DUTY_CYCLE 100 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_SetDoLedBlink
 }
 
 #===============================================================

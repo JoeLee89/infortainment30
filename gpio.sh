@@ -6,10 +6,10 @@ source ./common_func.sh
 #===============================================================
 set_get_port(){
   for (( i = 0; i < 16; i++ )); do
-#    launch_command "sudo ./idll-test.exe --GPIO_PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Port"
-    print_command "sudo ./idll-test.exe --GPIO_PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Port"
-    result00=$(sudo ./idll-test.exe --GPIO_PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Port)
-    result=$(sudo ./idll-test.exe --GPIO_PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Port | grep -i "adiGpioGetPort" |  sed 's/\\n//g')
+#    launch_command "sudo ./idll-test --GPIO_PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port"
+    print_command "sudo ./idll-test --GPIO_PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port"
+    result00=$(sudo ./idll-test --GPIO_PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port)
+    result=$(sudo ./idll-test --GPIO_PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port | grep -i "adiGpioGetPort" |  sed 's/\\n//g')
     echo "$result00"
 
     j=$( echo "obase=16;$i"|bc )
@@ -53,7 +53,7 @@ set_get_port(){
     for (( i = 0; i < 1000; i++ )); do
       random=$(shuf -i 0-15 -n 1)
       j_random=$( echo "obase=16;$random"|bc )
-      launch_command "sudo ./idll-test.exe --GPIO_PORT_VAL $random -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Port"
+      launch_command "sudo ./idll-test --GPIO_PORT_VAL $random -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port"
 
       if [ "$random" -gt 0 ]; then
         compare_result "$result" "(0x$j_random$j_random)"
@@ -73,9 +73,9 @@ set_get_pin(){
 
   for (( i = 0; i < 4; i++ )); do
     for state in "true" "false"; do
-      launch_command "sudo ./idll-test.exe --GPIO_PIN_ID 0x$i --GPIO_PIN_VAL $state -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Pin"
+      launch_command "sudo ./idll-test --GPIO_PIN_ID 0x$i --GPIO_PIN_VAL $state -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Pin"
       compare_result "$result" "Read back pin value: $state"
-      launch_command "sudo ./idll-test.exe --GPIO_PIN_ID 0x$((i+4)) --GPIO_PIN_VAL $state -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Pin"
+      launch_command "sudo ./idll-test --GPIO_PIN_ID 0x$((i+4)) --GPIO_PIN_VAL $state -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Pin"
       compare_result "$result" "Read back pin value: $state"
     done
 
@@ -90,9 +90,9 @@ set_get_pin(){
       random=$(shuf -i 0-3 -n 1)
 
       for state in "true" "false"; do
-        launch_command "sudo ./idll-test.exe --GPIO_PIN_ID 0x$random --GPIO_PIN_VAL $state -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Pin"
+        launch_command "sudo ./idll-test --GPIO_PIN_ID 0x$random --GPIO_PIN_VAL $state -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Pin"
         compare_result "$result" "Read back pin value: $state"
-        launch_command "sudo ./idll-test.exe --GPIO_PIN_ID 0x$((random+4)) --GPIO_PIN_VAL $state -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Pin"
+        launch_command "sudo ./idll-test --GPIO_PIN_ID 0x$((random+4)) --GPIO_PIN_VAL $state -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Pin"
         compare_result "$result" "Read back pin value: $state"
       done
 
@@ -111,11 +111,11 @@ BadParameter() {
   printf "${COLOR_RED_WD}===================${COLOR_REST}\n"
   read -p "enter key to continue..." continue
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --GPIO_PIN_ID 0x99 --GPIO_PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Pin ${COLOR_REST}\n"
-  sudo ./idll-test.exe --GPIO_PIN_ID 0x99 --GPIO_PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Pin
+  printf "${COLOR_RED_WD}sudo ./idll-test --GPIO_PIN_ID 0x99 --GPIO_PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Pin ${COLOR_REST}\n"
+  sudo ./idll-test --GPIO_PIN_ID 0x99 --GPIO_PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Pin
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --GPIO_PORT_VAL 65535 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Port ${COLOR_REST}\n"
-  sudo ./idll-test.exe --GPIO_PORT_VAL 65535 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Port
+  printf "${COLOR_RED_WD}sudo ./idll-test --GPIO_PORT_VAL 65535 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port ${COLOR_REST}\n"
+  sudo ./idll-test --GPIO_PORT_VAL 65535 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port
 
 
 }

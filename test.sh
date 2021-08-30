@@ -1,13 +1,13 @@
 #!/bin/bash
 #i=0
 #while true; do
-##   sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section PIC_Battery_PICEventByType
-##  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section adiLibInit
-##  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
+##   sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_Battery_PICEventByType
+##  sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section adiLibInit
+##  sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
 #  ((i++))
 #  echo "i=$i"
 #
-#  result=$(sudo ./idll-test.exe --ADDRESS 1319213 --LENGTH 4 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SramAsyncCalculateCRC32Manual)
+#  result=$(sudo ./idll-test --ADDRESS 1319213 --LENGTH 4 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SramAsyncCalculateCRC32Manual)
 #  if [[ "$result" =~ "Callback data[CRC]" ]]; then
 #    printf "===========================================================pass"
 #
@@ -20,8 +20,8 @@
 
 
 #for (( i = 0; i < 15; i++ )); do
-#  start /B /wait idll-test --PIN_NUM $i --BLINK 5 --DUTY_CYCLE 31 --BRIGHTNESS 63 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_Drive_SetBlink
-##  start /B /wait idll-test --PIN_NUM $i --BLINK 5 --DUTY_CYCLE 31 --BRIGHTNESS 0 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPO_LED_Drive_SetBlink
+#  start /B /wait idll-test --PIN_NUM $i --BLINK 5 --DUTY_CYCLE 31 --BRIGHTNESS 63 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_Drive_SetBlink
+##  start /B /wait idll-test --PIN_NUM $i --BLINK 5 --DUTY_CYCLE 31 --BRIGHTNESS 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_Drive_SetBlink
 #done
 
 #for (( i = 1; i < 16777215; i++ )); do
@@ -61,8 +61,8 @@
 
 #echo "${result:0:2}"
 
-#a=$(sudo ./idll-test.exe --GPIO_PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Port | grep -i "adiGpioGetPort" |  sed 's/\\n//g' > test.txt)
-#a=$(sudo ./idll-test.exe --GPIO_PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section SA3X_4xGPIO_by_Port > test.txt)
+#a=$(sudo ./idll-test --GPIO_PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port | grep -i "adiGpioGetPort" |  sed 's/\\n//g' > test.txt)
+#a=$(sudo ./idll-test --GPIO_PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port > test.txt)
 #a=$(cat test.txt)
 #echo "a=$a"
 #b="adiGpioGetPort(0x11)"
@@ -89,8 +89,8 @@
 #  for (( i = 0; i < 2 ; i++ )); do
 #    echo "====================================test time= $m===================================="
 #    echo "**********************************now read 1wire $i**********************************"
-#    sudo ./idll-test.exe --dallas-eeprom-write $i:0:$data -- --EBOARD_TYPE EBOARD_ADi_SA3X --section PIC_1Wire_EEPROM_Manual_write
-#    result=$(sudo ./idll-test.exe --dallas-eeprom-read $i:0:$length -- --EBOARD_TYPE EBOARD_ADi_SA3X --section PIC_1Wire_EEPROM_Manual_read)
+#    sudo ./idll-test --dallas-eeprom-write $i:0:$data -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_1Wire_EEPROM_Manual_write
+#    result=$(sudo ./idll-test --dallas-eeprom-read $i:0:$length -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_1Wire_EEPROM_Manual_read)
 #    echo "$result"
 #
 #    echo "**********************************now compare 1wire $i data**********************************"
@@ -114,6 +114,6 @@
 #
 
 while true; do
-  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section PIC_RTC_GETCLOCK
+  sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK
 
 done

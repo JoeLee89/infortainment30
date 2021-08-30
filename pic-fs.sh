@@ -8,9 +8,9 @@ PIC_SWByEvent() {
   title b "Check PIC SW button from PIC event"
 
   while true; do
-    #  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section PIC_GetPICEvent_and_DisplayEventTime
-    print_command "sudo ./idll-test.exe --external-sw 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section PIC_External_Function_SW_Test"
-    sudo ./idll-test.exe --external-sw 1 -- --EBOARD_TYPE EBOARD_ADi_SA3X --section PIC_External_Function_SW_Test
+    #  sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_GetPICEvent_and_DisplayEventTime
+    print_command "sudo ./idll-test --external-sw 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_External_Function_SW_Test"
+    sudo ./idll-test --external-sw 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_External_Function_SW_Test
 
     printf "q to exit ,or enter repeat test..\n"
     read -p "" leave
@@ -28,9 +28,9 @@ GetPortPin_BSEC() {
   read -p "Enter key to test.." confirm
 
   while true; do
-    #  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section PIC_GetPICEvent_and_DisplayEventTime
-    print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPI_BACC_FS"
-    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SA3X --section GPI_BACC_FS
+    #  sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_GetPICEvent_and_DisplayEventTime
+    print_command "sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPI_BACC_FS"
+    sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPI_BACC_FS
 
     printf "[q] to exit ,or enter to repeat test..\n"
     read -p "" leave
