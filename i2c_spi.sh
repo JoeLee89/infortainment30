@@ -8,10 +8,10 @@ I2CSPI_Auto() {
   title b "I2C_SPI device read/write test auto test"
   read -p "This test gonna loop forever, until press Ctrl+c to cancel test..."
   while true; do
-    launch_command "sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section ExtI2C"
+    launch_command "sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section ExtI2C"
     compare_result "$result" "passed"
 
-    launch_command "sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_SPI_RDID_REMS"
+    launch_command "sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_SPI_RDID_REMS"
     compare_result "$result" "RDID: 0xC2 20 18"
     compare_result "$result" "REMS: 0xC2 17"
 
@@ -30,7 +30,7 @@ I2CFreauency() {
   title b "I2C frequency setting test with [CORRECT] parameter"
   for all in 0 124 500 5000 65535; do
     title b "I2C prescale number: $all"
-    launch_command "sudo ./idll-test --I2C_PSCL $all -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_I2C_BUS"
+    launch_command "sudo ./idll-test.exe --I2C_PSCL $all -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_I2C_BUS"
     hz=$((12500000/(all+1)))
     compare_result "$result" "$hz Hz"
     compare_result "$result" "I2C Pre-Scale is : $all"
@@ -42,7 +42,7 @@ I2CFreauency() {
 
   title b "I2C frequency setting test with [WRONG] parameter"
   title b "I2C prescale number: $i2c_freq "
-  launch_command "sudo ./idll-test --I2C_PSCL $i2c_freq -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_I2C_BUS"
+  launch_command "sudo ./idll-test.exe --I2C_PSCL $i2c_freq -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_I2C_BUS"
   compare_result "$result" "failed"
 
 }
@@ -56,8 +56,8 @@ I2CWrite() {
   if [ "$i2caddr" == "" ]; then
     i2caddr="50"
   fi
-  print_command "sudo ./idll-test --SLAVE_ADDR 0x$i2caddr --I2C_CMD 0x00,0x00,0x01,0x02,0x03 --RESP_LEN 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_I2C_EXEC"
-  sudo ./idll-test --SLAVE_ADDR 0x$i2caddr --I2C_CMD 0x00,0x00,0x01,0x02,0x03 --RESP_LEN 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_I2C_EXEC
+  print_command "sudo ./idll-test.exe --SLAVE_ADDR 0x$i2caddr --I2C_CMD 0x00,0x00,0x01,0x02,0x03 --RESP_LEN 0 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_I2C_EXEC"
+  sudo ./idll-test.exe --SLAVE_ADDR 0x$i2caddr --I2C_CMD 0x00,0x00,0x01,0x02,0x03 --RESP_LEN 0 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_I2C_EXEC
 }
 
 
@@ -70,8 +70,8 @@ I2CRead() {
   if [ "$i2caddr" == "" ]; then
     i2caddr="50"
   fi
-  print_command "sudo ./idll-test --SLAVE_ADDR 0x$i2caddr --I2C_CMD 0x00,0x00 --RESP_LEN 3 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_I2C_EXEC"
-  sudo ./idll-test --SLAVE_ADDR 0x$i2caddr --I2C_CMD 0x00,0x00 --RESP_LEN 3 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_I2C_EXEC
+  print_command "sudo ./idll-test.exe --SLAVE_ADDR 0x$i2caddr --I2C_CMD 0x00,0x00 --RESP_LEN 3 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_I2C_EXEC"
+  sudo ./idll-test.exe --SLAVE_ADDR 0x$i2caddr --I2C_CMD 0x00,0x00 --RESP_LEN 3 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_I2C_EXEC
 }
 
 #===============================================================
@@ -83,7 +83,7 @@ SPIRead_RDID() {
   #SPI data reading from RDID
   #===============================================================
   title b "SPI data reading from RDID"
-  launch_command "sudo ./idll-test --SPI_MODE 0 --SPI_CMD 0x9F --RESP_LEN 3 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_SPI_EXEC"
+  launch_command "sudo ./idll-test.exe --SPI_MODE 0 --SPI_CMD 0x9F --RESP_LEN 3 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_SPI_EXEC"
   compare_result "result" "0xC2 20 18"
 
 }
@@ -93,7 +93,7 @@ SPIRead_RDID() {
 #===============================================================
 SPIRead_REMS() {
   title b "SPI data reading from REMS"
-  launch_command "sudo ./idll-test --SPI_MODE 0 --SPI_CMD 0x90,0x00,0x00,0x00 --RESP_LEN 2 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_SPI_EXEC"
+  launch_command "sudo ./idll-test.exe --SPI_MODE 0 --SPI_CMD 0x90,0x00,0x00,0x00 --RESP_LEN 2 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_SPI_EXEC"
   compare_result "result" "C2 17"
 }
 

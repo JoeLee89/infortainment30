@@ -15,17 +15,17 @@ SetPort() {
   title b "All LED setport test"
 
   for i in ${num[*]}; do
-#    launch_command "sudo ./idll-test --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPort"
-    print_command "sudo ./idll-test --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPort"
+#    launch_command "sudo ./idll-test.exe --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPort"
+    print_command "sudo ./idll-test.exe --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPort"
 
-    result=$(sudo ./idll-test --PORT_VAL "$i" -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPort)
+    result=$(sudo ./idll-test.exe --PORT_VAL "$i" -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPort)
     echo "$result"
     result=$(echo "$result" | grep -i "Port value:" | sed 's/\r//g')
     compare_result "$result" "Port value: $i"
     sleep 2
   done
 
-  reset=$(sudo ./idll-test --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPort)
+  reset=$(sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPort)
 }
 
 #===============================================================
@@ -36,8 +36,8 @@ SetPin() {
   read -p "enter key to continue..."
 
   for all in $(seq 0 2); do
-    print_command "sudo ./idll-test --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPin"
-    result=$(sudo ./idll-test --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPin)
+    print_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPin"
+    result=$(sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPin)
     echo "$result"
     result1=$(echo "$result" | grep -i "Pin number:" | sed 's/\r//g' )
     result2=$(echo "$result" | grep -i "Pin value: 1" | sed 's/\r//g' )
@@ -45,8 +45,8 @@ SetPin() {
     compare_result "$result2" "Pin value: 1"
     sleep 2
 
-    print_command "sudo ./idll-test --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPin"
-    result=$(sudo ./idll-test --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPin)
+    print_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPin"
+    result=$(sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPin)
     echo "$result"
     result1=$(echo "$result" | grep -i "Pin number:" | sed 's/\r//g' )
     result2=$(echo "$result" | grep -i "Pin value: 0" | sed 's/\r//g' )
@@ -61,9 +61,9 @@ SetPin() {
 BadParameter() {
   title b "Bad parameter test"
   read -p "enter key to continue..."
-  launch_command "sudo ./idll-test --PIN_NUM 999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPin"
-  launch_command "sudo ./idll-test --PIN_NUM 1 --PIN_VAL gsf -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPin"
-  launch_command "sudo ./idll-test --PORT_VAL 66666666666666666 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED_SetPort"
+  launch_command "sudo ./idll-test.exe --PIN_NUM 999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPin"
+  launch_command "sudo ./idll-test.exe --PIN_NUM 1 --PIN_VAL gsf -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPin"
+  launch_command "sudo ./idll-test.exe --PORT_VAL 66666666666666666 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED_SetPort"
 }
 
 

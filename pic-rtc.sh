@@ -6,19 +6,19 @@ source ./common_func.sh
 #===============================================================
 SetGetPICTime() {
   title b "new setting up the date 2028/02/28/12/30/30"
-  launch_command "sudo ./idll-test --pic-time 2028/02/29/12/30/40 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC"
+  launch_command "sudo ./idll-test.exe --pic-time 2028/02/29/12/30/40 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC"
 #  result=$(echo "$result" | sed 's/\r//g')
   compare_result "$result" "PICRTClock: PIC RTClock after set: 28/02/29 12:30:40"
 #  read -p ""
 
   title b "new setting up the date 2027/02/28/12/30/30"
-  launch_command "sudo ./idll-test --pic-time 2027/02/29/12/30/40 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC"
+  launch_command "sudo ./idll-test.exe --pic-time 2027/02/29/12/30/40 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC"
   compare_result "$result" "PICRTClock: PIC RTClock after set: 27/03/01 12:30:40"
 #  read -p ""
 
   title b "Getting PIC RTC time"
-#  print_command "sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK"
-#  sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK
+#  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_GETCLOCK"
+#  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_GETCLOCK
   for (( i = 0; i < 50; i++ )); do
     title b "Now sync up PIC time with RTC time"
     pic_rtc_sync
@@ -57,11 +57,11 @@ rtc_calibrate(){
 
   for (( i = 0; i < 10000; i++ )); do
     title b "Now try to make pic faster in 1.2 sec loop $i/10000"
-    print_command "sudo ./idll-test --RTC-CAL-VALUE=127 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section RtcCalibrateManual"
-    sudo ./idll-test --RTC-CAL-VALUE=127 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section RtcCalibrateManual
+    print_command "sudo ./idll-test.exe --RTC-CAL-VALUE=127 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section RtcCalibrateManual"
+    sudo ./idll-test.exe --RTC-CAL-VALUE=127 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section RtcCalibrateManual
   done
 
-  pic_time=$(sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK | grep -i "clock" | sed 's/PICRTClock: PIC RTClock: //g' | sed 's/\//-/g')
+  pic_time=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_GETCLOCK | grep -i "clock" | sed 's/PICRTClock: PIC RTClock: //g' | sed 's/\//-/g')
   pic_sec=$(date -d "$pic_time" +%s)
   echo "$pic_sec"
   now=$(date +%s)
@@ -81,12 +81,12 @@ rtc_calibrate(){
   pic_rtc_sync
   for (( i = 20000; i > 0; i-- )); do
     title b "Now try to make pic delay slower in 1.2 sec loop $i/20000"
-    sudo ./idll-test --RTC-CAL-VALUE=-128 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section RtcCalibrateManual
-    print_command "sudo ./idll-test --RTC-CAL-VALUE=-128 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section RtcCalibrateManual"
+    sudo ./idll-test.exe --RTC-CAL-VALUE=-128 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section RtcCalibrateManual
+    print_command "sudo ./idll-test.exe --RTC-CAL-VALUE=-128 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section RtcCalibrateManual"
 
   done
 
-  pic_time=$(sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK | grep -i "clock" | sed 's/PICRTClock: PIC RTClock: //g' | sed 's/\//-/g')
+  pic_time=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_GETCLOCK | grep -i "clock" | sed 's/PICRTClock: PIC RTClock: //g' | sed 's/\//-/g')
   pic_sec=$(date -d "$pic_time" +%s)
   now=$(date +%s)
   difference=$((now-pic_sec))
@@ -105,8 +105,8 @@ rtc_calibrate(){
   read -p ""
   for (( i = 0; i < 10000; i++ )); do
     title b "Now try to make pic get back to normal RTC speed. loop $i/10000"
-    print_command "sudo ./idll-test --RTC-CAL-VALUE=127 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section RtcCalibrateManual"
-    sudo ./idll-test --RTC-CAL-VALUE=127 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section RtcCalibrateManual
+    print_command "sudo ./idll-test.exe --RTC-CAL-VALUE=127 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section RtcCalibrateManual"
+    sudo ./idll-test.exe --RTC-CAL-VALUE=127 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section RtcCalibrateManual
 
 
   done
@@ -121,13 +121,13 @@ SetPICTime() {
   read -p "Type date format e.g. 20991231235959(year.month.date.hour.minute.second) to test:
 or just enter by default test : " date
   if [ "$date" == "" ]; then
-    sudo ./idll-test --pic-time 2099/12/31/23/59/59 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC
+    sudo ./idll-test.exe --pic-time 2099/12/31/23/59/59 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC
     sleep 1
-    sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK
+    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_GETCLOCK
   else
-    sudo ./idll-test --pic-time ${date:0:4}/${date:4:2}/${date:6:2}/${date:8:2}/${date:10:2}/${date:12:2} -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC
+    sudo ./idll-test.exe --pic-time ${date:0:4}/${date:4:2}/${date:6:2}/${date:8:2}/${date:10:2}/${date:12:2} -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC
     sleep 1
-    sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK
+    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_GETCLOCK
   fi
 }
 
@@ -136,8 +136,8 @@ or just enter by default test : " date
 #===============================================================
 GetPICTime() {
   title b "Getting PIC RTC time"
-  print_command "sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK"
-  sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK
+  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_GETCLOCK"
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_GETCLOCK
 }
 
 SyncPICTime() {
@@ -152,9 +152,9 @@ BadParameter() {
   printf "${COLOR_RED_WD}Setting PIC RTC time with error parameter ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}========================================= ${COLOR_REST}\n"
   read -p " " continue
-  printf "${COLOR_RED_WD}sudo ./idll-test --pic-time 2100/22/23/23/23/23 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC  ${COLOR_REST}\n"
-  sudo ./idll-test --pic-time 2100/22/23/23/23/23 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC
-  sudo ./idll-test --pic-time 2120/2/29/11/12/30 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC
+  printf "${COLOR_RED_WD}sudo ./idll-test.exe --pic-time 2100/22/23/23/23/23 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC  ${COLOR_REST}\n"
+  sudo ./idll-test.exe --pic-time 2100/22/23/23/23/23 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC
+  sudo ./idll-test.exe --pic-time 2120/2/29/11/12/30 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC
 }
 
 #===============================================================

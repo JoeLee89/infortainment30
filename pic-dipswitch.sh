@@ -7,8 +7,8 @@ DipSwitch_GetPortPin() {
   title b "DIP switch status get by Getpin & Getport (SCxx/BSEC_Backplan)"
 
   while true; do
-    print_command "sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPI_User_DIP_SW"
-    sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPI_User_DIP_SW
+    print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_User_DIP_SW"
+    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_User_DIP_SW
     read -p "press [q] to exit, or enter key to test: " input
     if [ "$input" == "q" ]; then
       break
@@ -23,8 +23,8 @@ DipSwitch_GetportPin_BSEC() {
   title b "DIP switch status get by Getpin & Getport (BSEC_Mainboard_DIP_SW)"
 
   while true; do
-    print_command "sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPI_Mainboard_DIP_SW"
-    sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPI_Mainboard_DIP_SW
+    print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_Mainboard_DIP_SW"
+    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_Mainboard_DIP_SW
 
     printf "${COLOR_BLUE_WD}press q to exit ${COLOR_REST}\n"
     read -p "press [q] to exit loop or enter key to retest : " input

@@ -2,15 +2,15 @@
 # ===== General =====
 # Test API : adiLibGetErrorString(EERROR Code, char* ErrorString, size_t Length);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Error_String_Message
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Error_String_Message
 
 # Test API : adiLibInit(EBOARD_TYPE BoardType);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section adiLibInit
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section adiLibInit
 
 # Test API : adiLibGetSystemInfo(SystemInfo* SysInfo);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SYS_Info
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SYS_Info
 
 
 # ===== User LED =====
@@ -23,7 +23,7 @@ sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SYS_Info
 # Test API : adiUserLedMainboardSetPort(uint64_t PortValue);
 # Test API : adiUserLedMainboardSetPin(uint8_t BitId, bool Value);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section User_LED
+sudo sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section User_LED
 
 
 # SA3X does not support High Current LED
@@ -33,7 +33,7 @@ sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section U
 # Test API : adiHcoSetPort(uint64_t PortValue);
 # Test API : adiHcoSetPin(uint8_t BitId, bool Value);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HighCurrent_LED
+#sudo sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HighCurrent_LED
 
 
 # ===== DIO =====
@@ -41,7 +41,7 @@ sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section U
 # Test API : adiDoGetLampBlink(uint8_t BitId, uint16_t* Period, uint16_t* DutyCycle);
 # Test API : adiDoGetPin(uint8_t BitId, bool* Value);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED
+sudo sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPO_LED
 
 
 # ===== LED PCA9626 Driver =====
@@ -54,14 +54,14 @@ sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section G
 # Test API : adiLedSetPin(uint8_t BitId, bool Value)
 # Test API : adiLedGetPin(uint8_t BitId, bool *Value)
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPO_LED_Drive
+sudo sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPO_LED_Drive
 
 # Test API : adiDiGetPort(uint64_t* PortValue);
 # Test API : adiDiGetPin(uint8_t BitId, bool* Value);
 # Test API : adiDiSetDebounceFilter(uint64_t BitMask, uint16_t DebounceValue);
 # Test API : adiDiGetDebounceFilter(uint8_t BitId, uint16_t* DebounceValue);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPI_Button
+#sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_Button
 
 # Test API : adiDipSwitchMainboardGetPort(uint64_t* PortValue);
 # Test API : adiDipSwitchMainboardGetPin(uint8_t BitId, bool* Value);
@@ -70,7 +70,7 @@ sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section G
 # Test API : adiBaccFsGetPort(uint64_t* PortValue); // BACC_FS1_FS2 // For BACC only
 # Test API : adiBaccFsGetPin(uint8_t BitId, bool* Value); // For BACC only
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section GPI_User_DIP_SW
+#sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_User_DIP_SW
 
 
 # ===== EEPROM =====
@@ -78,25 +78,25 @@ sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section G
 # Test API : adiEepromWrite(uint8_t Index, uint32_t Address, const uint8_t* Buffer, size_t Length);
 # Test API : adiEepromGetSize(uint8_t Index, uint32_t* Size);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section EEPROM_Auto
+sudo sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section EEPROM_Auto
 # Can assign which eeprom to test
-#sudo sudo ./idll-test --EMEM_TYPE EMEM_EEPROM1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section EEPROM_Auto
-#sudo sudo ./idll-test --EMEM_TYPE EMEM_EEPROM2 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section EEPROM_Auto
-#sudo sudo ./idll-test --EMEM_TYPE EMEM_EEPROM3 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section EEPROM_Auto
+#sudo sudo ./idll-test.exe --EMEM_TYPE EMEM_EEPROM1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section EEPROM_Auto
+#sudo sudo ./idll-test.exe --EMEM_TYPE EMEM_EEPROM2 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section EEPROM_Auto
+#sudo sudo ./idll-test.exe --EMEM_TYPE EMEM_EEPROM3 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section EEPROM_Auto
 
 
 # ===== Ext I2C=====
 # Please make sure the slave address of EEPROM on the external I2C is 0x50.
 # Test API : adiI2cExec(uint8_t Address, const uint8_t* OutBuffer, size_t OutBufLen, uint8_t* InBuffer, size_t* InBufLen);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section ExtI2C
+#sudo sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section ExtI2C
 
 
 # ===== Ext SPI =====
 # Test API : adiSpiInit(ESPI_BUS Bus, uint8_t Mode);
 # Test API : adiSpiExec(ESPI_BUS Bus, uint8_t* OutBuffer, size_t OutBufLen, uint8_t* InBuffer, size_t InBufLen);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Ext_SPI_RDID_REMS
+#sudo sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Ext_SPI_RDID_REMS
 
 
 # ===== Crypto =====
@@ -109,15 +109,15 @@ sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section E
 # Test API : adiCryptoAesEncode(const uint8_t* InBuffer, uint8_t* OutBuffer, size_t InOutBufLen);
 # Test API : adiCryptoAesDecode(const uint8_t* InBuffer, uint8_t* OutBuffer, size_t InOutBufLen);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Crypto
-#sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Crypto_SHA
-#sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Crypto_AES
+sudo sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Crypto
+#sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Crypto_SHA
+#sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Crypto_AES
 
 
 # ===== FPGA FW SHA256 verify =====
 # Test API : adiLibGetFirmwareSHA256(char* Sha256String);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC "Scenario: adiLibGetFirmwareSHA256"
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X "Scenario: adiLibGetFirmwareSHA256"
 
 
 # ===== Mard Meter =====
@@ -127,25 +127,25 @@ sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC "Scenario: adiLibGet
 # Test API : adiHardMeterSenseGetPin(uint8_t BitId, bool* Value);
 # Desc     : If not have 8 hard meters, assign --PORT_VAL as which pins your hard meter(s) connect to. (from 0x01~0xFF). Format: --PORT_VAL <decimal/hex number>
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter
-#sudo sudo ./idll-test --PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter
+#sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HardMeter
+#sudo sudo ./idll-test.exe --PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HardMeter
 
 
 # Test API : adiHardMeterDetectionPort(uint64_t* Status)
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPort
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HardMeter_Detection_ByPort
 
 
 # Test API : adiHardMeterDetectionPin(uint8_t BitId, bool* Status)
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test --HM_PIN_ID 0x0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section HardMeter_Detection_ByPin
+sudo sudo ./idll-test.exe --HM_PIN_ID 0x0 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section HardMeter_Detection_ByPin
 
 
 # ===== SecMeter =====
 # Test API : adiSecShowCounterValue(uint8_t CounterId);
 # Test API : adiSecIncrementCounterValue(uint8_t CounterId, uint16_t IncrementValue);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SecMeter
+#sudo sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SecMeter
 
 # Test API : adiSecSelfTest(ESEC_ERROR* errorCode);
 # Test API : adiSecRequestStatus(uint8_t *statusByte);
@@ -154,48 +154,48 @@ sudo sudo ./idll-test --HM_PIN_ID 0x0 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --se
 # Test API : adiSecRequestFingerPrint(uint32_t *fingerPrint);]
 # Test API : adiSecRequestLastError(ESEC_ERROR* errorCode);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SecMeter_New
+#sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SecMeter_New
 
 # Test API : adiSecShowBitPattern(uint8_t* pattern, size_t patternSize);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SecMeter_BitPattern
+#sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SecMeter_BitPattern
 
 # Test API : adiSecSetNumCounters(uint8_t numCounters);
 # Test API : adiSecCycleCounterDisplay(bool startOrStop);
 # sec-counter-num : The counter of channel in cycle display, it must be >= 1 and <= 31 (show counter text(1s) + counter value(3s) three times for each channel)
 # sec-reserve-time : The resvered time in ms for the secmeter to show the cycle display (3 * 4000 * sec-counter-num + 1000 by dedault)
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo sudo ./idll-test --sec-counter-num 3 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SecMeter_Cycle
+#sudo sudo ./idll-test.exe --sec-counter-num 3 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SecMeter_Cycle
 
 
 # ===== PIC =====
 # Test API : adiLibGetSystemInfo(SystemInfo* SysInfo);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_Firmware_Version
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_Firmware_Version
 
 # Add "-s" will display success test case message ==
 # Test API : adiRtcCalibrate(int8_t Value);
 # Test API : adiRtcGetTime(Time* Time);
 # Test API : adiRtcSetTime(const Time* Time);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test --pic-time 2019/04/13/01/02/03 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC
+sudo sudo ./idll-test.exe --pic-time 2019/04/13/01/02/03 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC
 
 # Move PIC_RTC(without assigned date time) after PIC_RTC(WITH assigned date time) to prevent Day Light Saving problem with different 'time zone'.
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_GETCLOCK
 
 # Test API : adi1wireSearchAllDevices(uint8_t* DevicesCount);
 # Test API : adi1wireGetUniqueId(uint8_t Index, char* Buffer, size_t Length);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_1Wire_IDs
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_IDs
 
 # Test API : adi1wireEepromRead(uint8_t Index, uint32_t Address, uint8_t* Buffer, size_t Length);
 # Test API : adi1wireEepromWrite(uint8_t Index, uint32_t Address, const uint8_t* Buffer,size_t Length);
 # Test API : adi1wireEepromGetSize(uint8_t Index, uint32_t* Size);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_1Wire_EEPROM_Same_Pattern_0xA5
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_1Wire_EEPROM_Random_Pattern
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Same_Pattern_0xA5
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Random_Pattern
 
 # Test API : adiBatGenerateEvent(void);
 # Test API : adiBatSetWarningVoltage(const Batteries* Voltages);
@@ -208,7 +208,7 @@ sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_1Wire_
 # Test API : adiEnableBatteryLowEvent(uint8_t interval, uint16_t pinMask, void (*CallbackFunction)(const Event PicEvent, uint16_t triggeredPinMask));
 # Test API : adiDisableBatteryLowEvent(uint16_t pinMask);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
 
 # [CALLBACK][PIC][UNITTEST] will run all callback of pic unit test
 # PIC Callback Add, duplicate add, remove every intrusion pin and event.
@@ -216,21 +216,21 @@ sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_GetPIC
 # Test API : adiEnableQueueFullEvent(void (*CallbackFunction)(uint8_t eventCount));
 # Test API : adiDisableQueueFullEvent(void);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Callback_PIC_Intrusion_Auto [CALLBACK][PIC][UNITTEST]
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Callback_PIC_EventQueueFull_Auto [CALLBACK][PIC][UNITTEST]
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Callback_PIC_WDTimeout_Auto [CALLBACK][PIC][UNITTEST]
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Callback_PIC_RtcAlarm_Auto [CALLBACK][PIC][UNITTEST]
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Callback_PIC_BatWarn_Auto [CALLBACK][PIC][UNITTEST]
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Callback_PIC_BatLow_Auto [CALLBACK][PIC][UNITTEST]
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_Intrusion_Auto [CALLBACK][PIC][UNITTEST]
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_EventQueueFull_Auto [CALLBACK][PIC][UNITTEST]
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_WDTimeout_Auto [CALLBACK][PIC][UNITTEST]
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_RtcAlarm_Auto [CALLBACK][PIC][UNITTEST]
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_BatWarn_Auto [CALLBACK][PIC][UNITTEST]
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_BatLow_Auto [CALLBACK][PIC][UNITTEST]
 
 # RD Test
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC [AUTO][UNITTEST]
+# sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X [AUTO][UNITTEST]
 
 # RD Test
 # Assign --pic-fw parameter to verify
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# sudo sudo ./idll-test --pic-fw 110  -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_Firmware_Version
+# sudo sudo ./idll-test.exe --pic-fw 110  -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_Firmware_Version
 
 
 # ===== PIC Alarm (& configuration) auto =====
@@ -238,15 +238,15 @@ sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Callback_P
 # Test API : adiDisableRtcAlarmEvent(void);
 # Test API : adiRtcGetAlarm(Time* alarmTime);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_ALARM_auto [PIC][RTC][ALARM][UNITTEST][AUTO]
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_ALARM_CONF_auto [PIC][RTC][ALARM][UNITTEST][AUTO]
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_ALARM_auto [PIC][RTC][ALARM][UNITTEST][AUTO]
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_RTC_ALARM_CONF_auto [PIC][RTC][ALARM][UNITTEST][AUTO]
 
 
 # ===== adiWatchdogSetSystemRestart & adiWatchdogGetSystemRestart  =====
 # Test API : adiEnableWatchdogTimeoutEvent(void (*CallbackFunction)(const Event wdEvent));
 # Test API : adiDisableWatchdogTimeoutEvent(void); 
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC "Scenario: adiWatchdogSetSystemRestart" -s
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X "Scenario: adiWatchdogSetSystemRestart" -s
 
 
 # ===== SRAM =====
@@ -255,10 +255,10 @@ sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC "Scenario: adiWatchd
 # Test API : adiSramWrite(uint32_t Address, const uint8_t* Buffer, size_t Length);
 # Test API : adiSramGetBankInformation( uint32_t *Number, uint32_t *Size);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SRAM_Capacity
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SRAM_Same_Pattern_0xA5
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SRAM_Random_Pattern
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SRAM_Performance
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Capacity
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Same_Pattern_0xA5
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Random_Pattern
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Performance
 
 
 # ===== SRAM =====
@@ -269,7 +269,7 @@ sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SRAM_Perfo
 # Test API : adiSramAsyncCalculateCRC32( uint32_t StartAddress, uint32_t Length);
 # Test API : adiSramGetBankInformation( uint32_t *Number, uint32_t *Size);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section ASYNC_SRAM
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section ASYNC_SRAM
 
 
 # ===== SRAM =====
@@ -279,7 +279,7 @@ sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section ASYNC_SRAM
 # Test API : adiSramCalculateCRC32( uint32_t StartAddress, uint32_t Length, uint32_t *CRC32);
 # Test API : adiSramGetBankInformation( uint32_t *Number, uint32_t *Size);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SYNC_SRAM
+sudo sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SYNC_SRAM
 
 
 # ===== 4xGPIO (only for SA3X) =====
@@ -287,10 +287,10 @@ sudo sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SYNC_SRAM
 # Test API : adiGpioGetPort(uint64_t* PortValue)
 # Depend on FPGA configuration, the GPO pin number maybe from 0 to 8. The possible GPIO_PORT_VAL range is from 0x0 to 0xFF.
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test --GPIO_PORT_VAL 0xF -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Port
+sudo sudo ./idll-test.exe --GPIO_PORT_VAL 0xF -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SA3X_4xGPIO_by_Port
 
 # Test API : adiGpioGetPin(uint8_t BitId, bool* Value)
 # Test API : adiGpioSetPin(uint8_t BitId, bool Value)
 # Depend on FPGA configuration, the GPO pin number maybe from 0 to 8. The possible value range is from 0x0 to 0xFF.
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo sudo ./idll-test --GPIO_PIN_ID 0x0 --GPIO_PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SA3X_4xGPIO_by_Pin
+sudo sudo ./idll-test.exe --GPIO_PIN_ID 0x0 --GPIO_PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SA3X_4xGPIO_by_Pin
