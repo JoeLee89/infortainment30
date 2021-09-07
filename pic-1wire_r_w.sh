@@ -177,9 +177,10 @@ Wire0_WriteSave_Manual(){
 }
 read_write_directly(){
   local wireid size
-  read -p "Input how many byte need to write, or just enter to test with all supported size for each 1wire: " size
-  read -p "Input which 1wire needed to write, or just enter to test with all supported 1wire(0-2): " wireid
-
+  read -p "Input how many byte need to write for each 1wire: " size
+  read -p "Input which 1wire needed to write supported 1wire(0-2): " wireid
+  size=${size:-"50"}
+  wireid=${wireid:-"0"}
   write_RandomSamePattern "$size" "$wireid" "random"
 }
 

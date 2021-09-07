@@ -114,6 +114,8 @@
 #
 
 while true; do
-  sudo ./idll-test -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section PIC_RTC_GETCLOCK
+#  sensors
+  lscpu | grep -i 'CPU MHz:'
+  sleep 1
 
 done

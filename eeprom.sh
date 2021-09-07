@@ -28,6 +28,7 @@ EepromReadWrite_Auto(){
     if [ "$input" == "q" ] || [ "$input" == "" ]|| [ "$input" == "Q" ]; then
       break
     elif [ "$x" -lt "$input" ]; then
+      print_command "sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section EEPROM_Auto"
       sudo ./idll-test --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section EEPROM_Auto
     fi
 

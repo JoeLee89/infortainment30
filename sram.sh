@@ -213,6 +213,8 @@ SramManualSramRandom(){
         title b "Assuming data = $data "
         launch_command "sudo ./idll-test --sram-read 1:$i:1 -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section SRAM_Manual_read"
         compare_result "$result" "$data"
+        compare_result "$result" "mirror mode: 1"
+
 
         if [[ $m < ${#write_data[*]} ]]; then
           (( m++ ))
@@ -276,6 +278,11 @@ Sram_Mirror_1_All(){
         printcolor r  "\nSram capacity check FAIL \n\n"
         read -p ""
       fi
+
+      #comfirm sram mirror mode
+      compare_result "$result" "mirror mode: $mirror_mode"
+
+
 
       if [[ $m < ${#write_data[*]} ]]; then
         (( m++ ))

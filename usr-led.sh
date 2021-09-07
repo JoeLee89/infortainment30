@@ -222,7 +222,7 @@ SetPort_Bsec_Mainboard(){
 #      read -p "enter key to continue..."
       sleep 2
 
-      launch_command "sudo ./idll-test --PORT_VAL $all -- --EBOARD_TYPE EBOARD_ADi_BSEC --section User_LED_SetPort"
+      launch_command "sudo ./idll-test --PORT_VAL $all -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Mainboard_User_LED_SetPort"
       value="value: $all"
       title b "Expected get pin/port data: ( $value )"
       compare_result "$result" "$value"
@@ -243,7 +243,7 @@ SetPort_Lec1(){
 #      printcolor b "========================"
 #      read -p "enter key to continue..."
       sleep 2
-      launch_command "sudo ./idll-test --PORT_VAL $all -- --EBOARD_TYPE EBOARD_ADi_BSEC --section Mainboard_User_LED_SetPort"
+      launch_command "sudo ./idll-test --PORT_VAL $all -- --EBOARD_TYPE EBOARD_ADi_BSEC_BACC --section Mainboard_User_LED_SetPort"
 
       value="value: $all"
       title b "Expected get pin/port data: ( $value )"
