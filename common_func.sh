@@ -187,7 +187,7 @@ printcolor() {
     printf "${COLOR_GREEN_WD}$2 ${COLOR_REST}\n"
     ;;
   "w")
-    printf "$2\n"
+    echo "$2"
     ;;
   esac
 
