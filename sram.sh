@@ -53,7 +53,7 @@ sram_info(){
 
   #display sram capacity in dec unit
 #  address=$( sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Capacity | grep -i 'size' | sed 's/SRAM size: //g' | sed 's/\/r//g')
-  address=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Capacity | grep -i 'size' | sed 's/SRAM size: //g' | sed 's/\/r//g' | sed 's/\s//g' |sed 's/]//g')
+  address=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Capacity | grep -i 'SRAM size' | sed 's/SRAM size: //g' | sed 's/\/r//g' | sed 's/\s//g' |sed 's/]//g')
 
   #display sram capacity in dec unit
 #  address=$(echo ${address:0:8})
@@ -70,7 +70,7 @@ sram_info(){
 
   #bank address list for some function usage
   bank_address=(${bank_address_list[@]})
-  echo "SRAM each bank first address = ${bank_address[@]}"
+  echo "SRAM each bank first address = ${bank_address[*]}"
   #input how many SRAM size
   totalsize=$address
 

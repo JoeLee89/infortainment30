@@ -1,6 +1,6 @@
 #!/bin/bash
 source ./common_func.sh
-loop_time=$(date +%s --date="+12 hour")
+loop_time=$(date +%s --date="+24 hour")
 file_name="all_test_cases_auto_linux.sh"
 times=0
 other() {
@@ -38,7 +38,7 @@ while true; do
 
   if [ "$(date +%s)" -gt "$loop_time" ]; then
     echo "The setting time's up!!"
-    echo "The overall test times= $loop_time"
+    echo "The overall test times= $times"
     break
   fi
 
