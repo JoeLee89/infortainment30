@@ -139,9 +139,9 @@ SramManualSramRandom(){
 
   for f in 0 1; do
     if [ "$f" -eq 0 ]; then
-      title b "Random data test"
+      title b "Random writing data test"
     else
-      title b "Same data test"
+      title b "Same writing data test"
     fi
 
     for (( i = 0; i < loop; i++ )); do
@@ -150,45 +150,59 @@ SramManualSramRandom(){
           m=0
         fi
 
+        #======================
+        #write data
+        title b "Writing data test"
         if [ "$f" -eq 0 ]; then
-          launch_command "sudo ./idll-test.exe --sram-write 1:$i:${write_data[$m]} -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_write"
+          data="0:	${write_data[$m]}"
+          launch_command "sudo ./idll-test.exe --sram-write 1:$i:${write_data[$m]} -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Manual_write"
         else
-          launch_command "sudo ./idll-test.exe --sram-write 1:$i:255 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_write"
+          data="0:	255"
+          launch_command "sudo ./idll-test.exe --sram-write 1:$i:255 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Manual_write"
         fi
+
+        #======================
+        #compare data
+        printf "\n\n"
+
+        title b "Compare Data"
+        title b "Assuming data = $data "
+        launch_command "sudo ./idll-test.exe --sram-read 1:$i:1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Manual_read"
+        compare_result "$result" "$data"
+        compare_result "$result" "mirror mode: 1"
 
         if [[ "$m" < ${#write_data[*]} ]]; then
           (( m++ ))
         fi
 
     done
-    #sudo ./idll-test.exe --dallas-eeprom-write 0:4:99 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_write
+    #sudo ./idll-test.exe --dallas-eeprom-write 0:4:99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write
 
-    m=0
-    for (( i = 0; i < loop; i++ )); do
-        if [ "$m" -eq ${#write_data[*]} ]; then
-          m=0
-        fi
-
-        if [ "$f" -eq 0 ]; then
-          data="0:	${write_data[$m]}"
-        else
-          data="0:	255"
-        fi
-
-        title b "Assuming data = $data "
-        launch_command "sudo ./idll-test.exe --sram-read 1:$i:1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_read"
-        compare_result "$result" "$data"
-        compare_result "$result" "mirror mode: 1"
-
-
-        if [[ "$m" -lt ${#write_data[*]} ]]; then
-          (( m++ ))
-        fi
-    done
+#    m=0
+#    for (( i = 0; i < loop; i++ )); do
+#        if [ "$m" -eq ${#write_data[*]} ]; then
+#          m=0
+#        fi
+#
+#        if [ "$f" -eq 0 ]; then
+#          data="0:	${write_data[$m]}"
+#        else
+#          data="0:	255"
+#        fi
+#
+#        title b "Assuming data = $data "
+#        launch_command "sudo ./idll-test.exe --sram-read 1:$i:1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Manual_read"
+#        compare_result "$result" "$data"
+#        compare_result "$result" "mirror mode: 1"
+#
+#
+#        if [[ "$m" -lt ${#write_data[*]} ]]; then
+#          (( m++ ))
+#        fi
+#    done
   done
 
 }
-
 #===============================================================
 #writing data in wrong address based on mirror mode maximum address to add extra 1 byte
 #===============================================================
@@ -437,113 +451,9 @@ Sram_Mirror_2_2_ScxxSa3(){
 
 
 #===============================================================
-# (LEC1) (A2) SRAM mirror 2 to 2 function test
-#===============================================================
-Sram_Mirror_2_2_Lec1_A2(){
-  local m loop
-  local mirror_mode=2
-#  sram_info
-  printcolor r "Enter the number to divide by to result in sram size in mirror mode:"
-  read -p "" input
-  printcolor r "Input how many byte you need to test or ENTER to test on all supported size:"
-  read -p "" input_size
-  loop=${input_size:-$address_dec}
-
-  after_size=$((totalsize/input))
-  size="SRAM size: $after_size"
-
-
-  title b "(LEC1 only) Now test with mirror 2 to 2"
-  #read -p " " continue
-
-  for (( i = 0; i < loop; i++ )); do
-
-      if [ "$m" == ${#write_data[*]} ]; then
-        m=0
-      fi
-      #will write the same data in both bank 0/2, so both bank all have the same data.
-      #write data in bank0 first
-      launch_command "sudo ./idll-test.exe --sram-write $mirror_mode:$i:${write_data[$m]} -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_write"
-      verify_result "$result"
-
-      #write data in bank2 , the address will refer to bank1 first address + $i parameter
-      if [ "${bank_address[2]}" ]; then
-        launch_command "sudo ./idll-test.exe --sram-write $mirror_mode:$((i+bank_address[2])):${write_data[$m]} -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_write"
-        verify_result "$result"
-
-      fi
-
-      #comfirm sram capacity with mirror mode 4
-      compare_result "$result" "$size"
-
-      if [[ "$m" < ${#write_data[*]} ]]; then
-        (( m++ ))
-      fi
-
-  done
-
-  #read data / compare data with mirror mode1 / 4
-  m=0
-  for (( i = 0; i < loop; i++ )); do
-      if [ "$m" == ${#write_data[*]} ]; then
-        m=0
-      fi
-
-      data="0:	${write_data[$m]}"
-
-      printf "\n\n\n\n\n"
-      title r "Expected including data for the following test result = $data"
-
-      #Mirror=2 to check data
-      title b "Mirror=2 to check data with bank 0/1"
-
-      #bank0 data compare with mirror2
-      launch_command "sudo ./idll-test.exe --sram-read $mirror_mode:$i:1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_read"
-      verify_result "$result"
-#      result=$( sudo ./idll-test.exe --sram-read $mirror_mode:$i:1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_read )
-#      printf  "$result\n"
-      compare_result "$result" "$data"
-
-      #bank2 data compare with mirror2
-      if [ "${bank_address[2]}" ]; then
-        launch_command "sudo ./idll-test.exe --sram-read $mirror_mode:$((i+bank_address[2])):1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_read"
-        verify_result "$result"
-        compare_result "$result" "$data"
-      fi
-
-      #data compare data with mirror 1
-      #Mirror=1 to check data with bank 0/1
-      title b "Mirror=1 to check data with bank 0/1"
-      for a in ${bank_address[0]} ${bank_address[1]}; do
-        if [ "$a" ]; then
-          launch_command "sudo ./idll-test.exe --sram-read 1:$((i+a)):1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_read"
-          verify_result "$result"
-          compare_result "$result" "$data"
-        fi
-      done
-
-      #Mirror=1 to check data with bank 2/3
-      title b "Mirror=1 to check data with bank 2 / 3"
-      for a in ${bank_address[2]} ${bank_address[3]}; do
-        if [ "$a" ]; then
-          launch_command "sudo ./idll-test.exe --sram-read 1:$((i+a)):1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_read"
-          verify_result "$result"
-          compare_result "$result" "$data"
-        fi
-      done
-
-      if [[ "$m" -lt ${#write_data[*]} ]]; then
-        (( m++ ))
-      fi
-  done
-  #confirm if there is error returned, while writing in wrong address
-  write_wrong_address "$mirror_mode"
-}
-
-#===============================================================
 # (LEC1) (A3) SRAM mirror 2 to 2 function test
 #===============================================================
-Sram_Mirror_2_2_Lec1_A3(){
+Sram_Mirror_2_2_Lec1(){
   local m loop
   local mirror_mode=2
 #  sram_info
@@ -571,7 +481,7 @@ Sram_Mirror_2_2_Lec1_A3(){
       verify_result "$result"
 
       #write data in bank1 , the address will refer to bank1 first address + $i parameter
-      if [ "${bank_address[1]}" ]; then
+      if [[ "${bank_address[1]}" && "$bank_amount" -lt 2 ]]; then
         launch_command "sudo ./idll-test.exe --sram-write $mirror_mode:$((i+bank_address[1])):${write_data[$m]} -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_write"
         verify_result "$result"
 
@@ -609,7 +519,7 @@ Sram_Mirror_2_2_Lec1_A3(){
       compare_result "$result" "$data"
 
       #bank2 data compare with mirror2
-      if [ "${bank_address[1]}" ]; then
+      if [[ "${bank_address[1]}" && "$bank_amount" -lt 2 ]]; then
         launch_command "sudo ./idll-test.exe --sram-read $mirror_mode:$((i+bank_address[1])):1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_read"
         verify_result "$result"
         compare_result "$result" "$data"
@@ -628,13 +538,14 @@ Sram_Mirror_2_2_Lec1_A3(){
 
       #Mirror=1 to check data with bank 2/3
       title b "Mirror=1 to check data with bank 2 / 3"
-      for a in ${bank_address[2]} ${bank_address[3]}; do
-        if [ "$a" ]; then
+      if [[ "$bank_amount" -lt 2 ]]; then
+        for a in ${bank_address[2]} ${bank_address[3]}; do
           launch_command "sudo ./idll-test.exe --sram-read 1:$((i+a)):1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section SRAM_Manual_read"
           verify_result "$result"
           compare_result "$result" "$data"
-        fi
-      done
+        done
+      fi
+
 
       if [[ "$m" -lt ${#write_data[*]} ]]; then
         (( m++ ))
@@ -998,14 +909,13 @@ while true; do
   printf  "${COLOR_RED_WD}4. SRAM MANUAL READ/WRITE SAME/RANDOM ${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}5. SRAM MIRROR 1 to ALL (ALL PROJECTS)${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}6. SRAM MIRROR 2 TO 2 (SCXX/SA3) ${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}7. SRAM MIRROR 2 TO 2 (LEC1_A2)${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}8. SRAM MIRROR 2 TO 2 (LEC1_A3)${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}9. BAD PARAMETER${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}10. DATA ITERATING READ/WRITE${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}11. SRAM WRITE WITH VERIFY${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}12. SRAM BANK COPY${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}13. SRAM BANK COMPARE${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}14. SRAM CRC32 CALCULATE${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}7. SRAM MIRROR 2 TO 2 (LEC1)${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}8. BAD PARAMETER${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}9. DATA ITERATING READ/WRITE${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}10. SRAM WRITE WITH VERIFY${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}11. SRAM BANK COPY${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}12. SRAM BANK COMPARE${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}13. SRAM CRC32 CALCULATE${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}======================================${COLOR_REST}\n"
   printf  "CHOOSE ONE TO TEST: "
   read -p "" input
@@ -1023,20 +933,18 @@ while true; do
   elif [ "$input" == 6 ]; then
     Sram_Mirror_2_2_ScxxSa3
   elif [ "$input" == 7 ]; then
-    Sram_Mirror_2_2_Lec1_A2
+    Sram_Mirror_2_2_Lec1
   elif [ "$input" == 8 ]; then
-    Sram_Mirror_2_2_Lec1_A3
-  elif [ "$input" == 9 ]; then
     BadParameter
-  elif [ "$input" == 10 ]; then
+  elif [ "$input" == 9 ]; then
     sram_write_read_iterate
-  elif [ "$input" == 11 ]; then
+  elif [ "$input" == 10 ]; then
     writewithverify
-  elif [ "$input" == 12 ]; then
+  elif [ "$input" == 11 ]; then
     bank_copy
-  elif [ "$input" == 13 ]; then
+  elif [ "$input" == 12 ]; then
     bank_compare
-  elif [ "$input" == 14 ]; then
+  elif [ "$input" == 13 ]; then
     crc32_caculate
 
   fi
