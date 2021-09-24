@@ -7,7 +7,7 @@ write_data
 size_check() {
   local result i
   for ((i = 0; i < 3; i++)); do
-    result=$(sudo ./idll-test.exe --dallas-eeprom-write 0:0:255 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_write | grep -i "device $i" | sed "s/1Wire - device $i size: //g" | sed "s/\s//g")
+    result=$(sudo ./idll-test.exe --dallas-eeprom-write 0:0:255 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write | grep -i "device $i" | sed "s/1Wire - device $i size: //g" | sed "s/\s//g")
     if [[ "$result" && "$result" -ne 0 ]]; then
       size[$i]=$result
       wire_number=${#size[@]}
@@ -38,9 +38,9 @@ WireWriteSave_Auto() {
     if [[ "$input" == "q" || "$input" == "" ]]; then
       break
     elif [[ "$x" -lt "$input" ]]; then
-      launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Same_Pattern_0xA5"
+      launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Same_Pattern_0xA5"
       compare_result "$result" "pass"
-      launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Random_Pattern"
+      launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Random_Pattern"
       compare_result "$result" "pass"
     fi
 
@@ -91,7 +91,7 @@ write_RandomSamePattern(){
 #    echo "type=$type"
 #    echo "choise=$choise"
 #    echo "data=$data"
-    launch_command "sudo ./idll-test.exe --dallas-eeprom-write $choise:$position:$data -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_write"
+    launch_command "sudo ./idll-test.exe --dallas-eeprom-write $choise:$position:$data -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write"
     compare_RandomSamePattern "$choise" "$data" "$position"
   done
 }
@@ -114,7 +114,7 @@ compare_RandomSamePattern(){
   printf "\n\n\n\n\n"
   title b "The expected result should include data as the following list:"
   title b "Assuming data = $data"
-  launch_command "sudo ./idll-test.exe --dallas-eeprom-read $choise:$position:1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_read"
+  launch_command "sudo ./idll-test.exe --dallas-eeprom-read $choise:$position:1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_read"
   compare_result "$result" "$data"
 }
 
@@ -190,8 +190,8 @@ read_write_directly(){
 #===============================================================
 SearchID() {
   title b "Search / Check i-wire ID"
-  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_IDs"
-  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_IDs
+  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_IDs"
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_IDs
   msg=(
     "device 0 size: ${size[0]}"
     "device 1 size: ${size[1]}"
@@ -209,11 +209,11 @@ BadParameter() {
   read -p "enter key to test..." continue
   bad=9999999999
   for all in $(seq 0 2); do
-    printf "${COLOR_RED_WD}sudo ./idll-test.exe --dallas-eeprom-write $all:$bad:255/255/255 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_write ${COLOR_REST}\n"
-    sudo ./idll-test.exe --dallas-eeprom-write $all:$bad:255/255/255 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_write
+    printf "${COLOR_RED_WD}sudo ./idll-test.exe --dallas-eeprom-write $all:$bad:255/255/255 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write ${COLOR_REST}\n"
+    sudo ./idll-test.exe --dallas-eeprom-write $all:$bad:255/255/255 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write
     sleep 0.5
-    printf "${COLOR_RED_WD}sudo ./idll-test.exe --dallas-eeprom-read $all:$bad:3 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_read ${COLOR_REST}\n"
-    sudo ./idll-test.exe --dallas-eeprom-read $all:$bad:3 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_read
+    printf "${COLOR_RED_WD}sudo ./idll-test.exe --dallas-eeprom-read $all:$bad:3 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_read ${COLOR_REST}\n"
+    sudo ./idll-test.exe --dallas-eeprom-read $all:$bad:3 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_read
   done
 
   printf "${COLOR_RED_WD}Now test with bad data ${COLOR_REST}\n"
@@ -221,16 +221,16 @@ BadParameter() {
   read -p "" continue
   bad="g/g/g"
   for all in $(seq 0 2); do
-    printf "${COLOR_RED_WD}sudo ./idll-test.exe --dallas-eeprom-write $all:0:$bad -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_write ${COLOR_REST}\n"
-    sudo ./idll-test.exe --dallas-eeprom-write $all:0:$bad -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_write
+    printf "${COLOR_RED_WD}sudo ./idll-test.exe --dallas-eeprom-write $all:0:$bad -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write ${COLOR_REST}\n"
+    sudo ./idll-test.exe --dallas-eeprom-write $all:0:$bad -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write
   done
 
   printf "${COLOR_RED_WD}Now test with bad reading length ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}================================  ${COLOR_REST}\n"
   read -p "" continue
   for all in $(seq 0 2); do
-    printf "${COLOR_RED_WD}sudo ./idll-test.exe --dallas-eeprom-read $all:0:-1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_read ${COLOR_REST}\n"
-    sudo ./idll-test.exe --dallas-eeprom-read $all:0:-1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_read
+    printf "${COLOR_RED_WD}sudo ./idll-test.exe --dallas-eeprom-read $all:0:-1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_read ${COLOR_REST}\n"
+    sudo ./idll-test.exe --dallas-eeprom-read $all:0:-1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_read
   done
 }
 
@@ -239,7 +239,7 @@ BadParameter() {
 #===============================================================
 write() {
   title "writing data : $1"
-  launch_command "sudo ./idll-test.exe --dallas-eeprom-write $2:0:$1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_write"
+  launch_command "sudo ./idll-test.exe --dallas-eeprom-write $2:0:$1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write"
   compare_result "$result" "passed"
 }
 
@@ -251,7 +251,7 @@ read_data() {
   data_length=$1
   #  title "writing data : $1"
   #  printf "data_length=$data_length\n"
-  launch_command "sudo ./idll-test.exe --dallas-eeprom-read $2:0:$data_length -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_1Wire_EEPROM_Manual_read"
+  launch_command "sudo ./idll-test.exe --dallas-eeprom-read $2:0:$data_length -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_read"
 
 
   for ((p = 0; p < data_length; p++)); do

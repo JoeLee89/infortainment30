@@ -14,8 +14,8 @@ GetPortPin_Callback() {
     if [ "$input" == 'q' ]; then
       break
     fi
-    print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_Button"
-    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_Button
+    print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_Button"
+    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_Button
 
     read -p "[q] exit test, or enter key to keep looping..." input
     if [ "$input" == "q" ]; then
@@ -45,8 +45,8 @@ Debounce() {
         printf "debounce = ${COLOR_BLUE_WD} $all ${COLOR_REST}\n"
         printf "(SCXX/SA3) debounce time = ${COLOR_BLUE_WD} $scxx ms ${COLOR_REST}\n"
         printf "(LEC1) debounce time = ${COLOR_BLUE_WD} $all ms ${COLOR_REST}\n"
-        print_command "sudo ./idll-test.exe --DEBOUNCE $all -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_SetDebounce"
-        sudo ./idll-test.exe --DEBOUNCE $all -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_SetDebounce
+        print_command "sudo ./idll-test.exe --DEBOUNCE $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_SetDebounce"
+        sudo ./idll-test.exe --DEBOUNCE $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_SetDebounce
         sleep 0.5
 
         read -p "[q] to exit debounce time= $all ms loop, or enter key to loop" leave
@@ -72,7 +72,7 @@ BadParameter() {
   printf "${COLOR_RED_WD}Check bad parameter ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}===================${COLOR_REST}\n"
   read -p "enter key to test..." continue
-  sudo ./idll-test.exe --DEBOUNCE 65536 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_SetDebounce
+  sudo ./idll-test.exe --DEBOUNCE 65536 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_SetDebounce
 }
 
 #===============================================================
@@ -82,8 +82,8 @@ DiPulseWidth_auto() {
   printf "${COLOR_RED_WD}DI Pulse Width detection automatically (loopback cable) ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}======================================================== ${COLOR_REST}\n"
   read -p " " continue
-  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI
-  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section DI_PW_GetSetTimeout [ADiDLL][DI_INTERRUPT][AUTO][UNITTEST]
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section DI_PW_GetSetTimeout [ADiDLL][DI_INTERRUPT][AUTO][UNITTEST]
 }
 
 #===============================================================
@@ -102,8 +102,8 @@ DiPwdInterrupt_NoTimeout() {
     fi
 
     printcolor y "Mask= DI 0-15 (Mask all set = 1)"
-    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-    sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+    sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 
     if [ "$x" == "true" ]; then
       printcolor y "Trigger mode=  low-high-low"
@@ -112,8 +112,8 @@ DiPwdInterrupt_NoTimeout() {
     fi
 
     printcolor y "Mask= DI 16-31 (Mask all set = 1)"
-    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 4294901760 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-    sudo ./idll-test.exe --DI-Int false --DI-Mask 4294901760 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 4294901760 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+    sudo ./idll-test.exe --DI-Int false --DI-Mask 4294901760 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 
   done
 }
@@ -130,7 +130,7 @@ DiPwdInterrupt_Timeout() {
     ##############################################################
     #Set PWD timeout & to compare the getting PWD timeout result
     title b "Set PWD timeout & get PWD timeout result"
-    launch_command "sudo ./idll-test.exe --DI-PWD-Enable true --DI-PWD-Timeout $timeout -- --EBOARD_TYPE EBOARD_ADi_SC1X --section DI_PW_GetSetTimeout_Manu"
+    launch_command "sudo ./idll-test.exe --DI-PWD-Enable true --DI-PWD-Timeout $timeout -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section DI_PW_GetSetTimeout_Manu"
     compare_result "$result" "Get : PWD Timeout Enabled = 1, PWD Timeout = $timeout"
 
     ##############################################################
@@ -147,8 +147,8 @@ DiPwdInterrupt_Timeout() {
 
     printcolor y "DI PWD time out= $timeoutprint ms"
     printcolor y "Mask= DI 0-15 (Mask setting = 1)"
-    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-    sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+    sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 
     if [ "$x" == "true" ]; then
       printf "${COLOR_YELLOW_WD}Trigger mode=  low-high-low ${COLOR_REST}\n"
@@ -158,8 +158,8 @@ DiPwdInterrupt_Timeout() {
     printf "${COLOR_YELLOW_WD}DI PWD time out= $timeoutprint ms ${COLOR_REST}\n"
     printf "${COLOR_YELLOW_WD}Mask= DI 16-31 (Mask setting = 1) ${COLOR_REST}\n"
 
-    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 4294901760 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-    sudo ./idll-test.exe --DI-Int false --DI-Mask 4294901760 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 4294901760 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+    sudo ./idll-test.exe --DI-Int false --DI-Mask 4294901760 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 
   done
 }
@@ -177,7 +177,7 @@ DiPwdInterrupt_Timeout_disabled() {
     ##############################################################
     #Set PWD timeout & to compare the getting PWD timeout result
     title b "Set PWD timeout & get PWD timeout result"
-    launch_command "sudo ./idll-test.exe --DI-PWD-Enable true --DI-PWD-Timeout $timeout -- --EBOARD_TYPE EBOARD_ADi_SC1X --section DI_PW_GetSetTimeout_Manu"
+    launch_command "sudo ./idll-test.exe --DI-PWD-Enable true --DI-PWD-Timeout $timeout -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section DI_PW_GetSetTimeout_Manu"
     compare_result "$result" "Get : PWD Timeout Enabled = 0, PWD Timeout = $timeout"
 
     ##############################################################
@@ -194,8 +194,8 @@ DiPwdInterrupt_Timeout_disabled() {
 
     printcolor y "DI PWD time out= $timeoutprint ms"
     printcolor y "Mask= DI 0-31 (Mask setting = 1)"
-    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-    sudo ./idll-test.exe --DI-Int false --DI-Mask 4294967295 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+    print_command "sudo ./idll-test.exe --DI-Int false --DI-Mask 65535 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+    sudo ./idll-test.exe --DI-Int false --DI-Mask 4294967295 --DI-PW-Polarity $x -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 
   done
 }
@@ -215,9 +215,9 @@ DiPwdInterrupt_Timeout_disabled() {
 #      "Trigger mode= Rising edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #      msg=(
 #      "Mask= DI 0-15 (Mask set = 1)"
@@ -225,9 +225,9 @@ DiPwdInterrupt_Timeout_disabled() {
 #      "Trigger mode= Rising edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #    elif [ "$i" == 2 ]; then
 #      msg=(
@@ -236,9 +236,9 @@ DiPwdInterrupt_Timeout_disabled() {
 #      "Trigger mode= Falling edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #      msg=(
 #      "Mask= DI 0-15 (Mask set = 1)"
@@ -246,9 +246,9 @@ DiPwdInterrupt_Timeout_disabled() {
 #      "Trigger mode= Falling edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #    elif [ "$i" == 3 ]; then
 #      msg=(
@@ -257,9 +257,9 @@ DiPwdInterrupt_Timeout_disabled() {
 #      "Trigger mode= Rising/Falling edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #      msg=(
 #      "Mask= DI 0-15 (Mask set = 1)"
@@ -267,9 +267,9 @@ DiPwdInterrupt_Timeout_disabled() {
 #      "Trigger mode= Rising/Falling edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #    elif [ "$i" == 4 ]; then
 #      msg=(
@@ -278,9 +278,9 @@ DiPwdInterrupt_Timeout_disabled() {
 #      "Trigger mode= NONE (can NOT trigger any pin)"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #    fi
 #
 #  done
@@ -322,9 +322,9 @@ DiInterrpt() {
       "Trigger mode= $status1/$status2 edge"
       )
       title_list y "msg[@]"
-      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
+      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
 
       msg=(
       "Mask= DI 0-15 (Mask set = 1)"
@@ -332,9 +332,9 @@ DiInterrpt() {
       "Trigger mode= $status1/$status2 edge"
       )
       title_list y "msg[@]"
-      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
+      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising $i --DI-Int-Falling $m -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
     done
   done
 
@@ -345,8 +345,8 @@ DiInterrpt() {
       "Trigger mode= Rising/Falling edge"
       )
       title_list y "msg[@]"
-      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 0 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-      result=$(sudo ./idll-test.exe --DI-Int true --DI-Mask 0 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu)
+      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 0 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+      result=$(sudo ./idll-test.exe --DI-Int true --DI-Mask 0 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu)
       compare_result "$result" "failed"
 
 
@@ -358,9 +358,9 @@ DiInterrpt() {
 #      "Trigger mode= Falling edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #      msg=(
 #      "Mask= DI 0-15 (Mask set = 1)"
@@ -368,9 +368,9 @@ DiInterrpt() {
 #      "Trigger mode= Falling edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising false --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #    elif [ "$i" == 3 ]; then
 #      msg=(
@@ -379,9 +379,9 @@ DiInterrpt() {
 #      "Trigger mode= Rising/Falling edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294901760 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #      msg=(
 #      "Mask= DI 0-15 (Mask set = 1)"
@@ -389,9 +389,9 @@ DiInterrpt() {
 #      "Trigger mode= Rising/Falling edge"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 65535 --DI-Int-Rising true --DI-Int-Falling true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #
 #    elif [ "$i" == 4 ]; then
 #      msg=(
@@ -400,9 +400,9 @@ DiInterrpt() {
 #      "Trigger mode= NONE (can NOT trigger any pin)"
 #      )
 #      title_list y "msg[@]"
-#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu"
-##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Register_DI_Manu
+#      launch_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      print_command "sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu"
+##      sudo ./idll-test.exe --DI-Int true --DI-Mask 4294967295 --DI-Int-Rising false --DI-Int-Falling false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Register_DI_Manu
 #    fi
 
 #  done
@@ -443,11 +443,11 @@ ConfirmPulseWidth() {
     for i in "false" "true"; do
       if [ "$i" == "false" ]; then
         printf "trigger point= ${COLOR_BLUE_WD} Wave Down ${COLOR_REST}\n"
-        sudo ./idll-test.exe --DI-PW-Polarity $i --DI-PW-DO-ON-Time $do_on --DI-PW-DO-OFF-Time $do_off --DI-PW-DO-ON-OFF-Cycle 5 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section DI_PW_INT_DoLinkDi [ADiDLL][DI_INTERRUPT][MANUAL]
+        sudo ./idll-test.exe --DI-PW-Polarity $i --DI-PW-DO-ON-Time $do_on --DI-PW-DO-OFF-Time $do_off --DI-PW-DO-ON-OFF-Cycle 5 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section DI_PW_INT_DoLinkDi [ADiDLL][DI_INTERRUPT][MANUAL]
         printf "${COLOR_BLUE_WD}The returned Pulse Width should be similar with DO-ON times... ${COLOR_REST}\n"
       else
         printf "trigger point= ${COLOR_BLUE_WD} Wave UP ${COLOR_REST}\n"
-        sudo ./idll-test.exe --DI-PW-Polarity $i --DI-PW-DO-ON-Time $do_on --DI-PW-DO-OFF-Time $do_off --DI-PW-DO-ON-OFF-Cycle 5 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section DI_PW_INT_DoLinkDi [ADiDLL][DI_INTERRUPT][MANUAL]
+        sudo ./idll-test.exe --DI-PW-Polarity $i --DI-PW-DO-ON-Time $do_on --DI-PW-DO-OFF-Time $do_off --DI-PW-DO-ON-OFF-Cycle 5 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section DI_PW_INT_DoLinkDi [ADiDLL][DI_INTERRUPT][MANUAL]
         printf "${COLOR_BLUE_WD}The returned Pulse Width should be similar with DO-OFF times... ${COLOR_REST}\n"
 
       fi
@@ -481,7 +481,7 @@ Callback_Bsec() {
     #  if [ "$leave" == "q" ]; then
     #    break
     #  fi
-    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section GPI_BACC_INT_CALLBACK
+    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_BACC_INT_CALLBACK
 
   done
 }

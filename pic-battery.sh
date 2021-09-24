@@ -2,9 +2,9 @@
 source ./common_func.sh
 battery_wanring_reset(){
   if [ "$1" == "low" ]; then
-    temp=$(sudo ./idll-test.exe --pic-batteries-voltage 0,0,0 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU])
+    temp=$(sudo ./idll-test.exe --pic-batteries-voltage 0,0,0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU])
   else
-    temp=$(sudo ./idll-test.exe --pic-batteries-voltage 0,0,0 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section BatSetGetWarningVoltageManual [PIC][BATTERY][MANU])
+    temp=$(sudo ./idll-test.exe --pic-batteries-voltage 0,0,0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section BatSetGetWarningVoltageManual [PIC][BATTERY][MANU])
   fi
 }
 
@@ -16,7 +16,7 @@ pic_battery_low(){
     battery_wanring_reset "warning"
 
     #confirm if the setting voltage is the same as getting voltage in low voltage idll function
-    launch_command "sudo ./idll-test.exe --pic-batteries-voltage "$low1,$low2,$low3" -- --EBOARD_TYPE EBOARD_ADi_SC1X --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU]"
+    launch_command "sudo ./idll-test.exe --pic-batteries-voltage "$low1,$low2,$low3" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU]"
     compare_result "$result" "batteriesGet.Volts1=$low1, batteriesGet.Volts2=$low2, batteriesGet.Volts3=$low3"
 
     #wait 12 minute to confirm if pic generate related pic battery warning event manually
@@ -61,7 +61,7 @@ pic_battery_low_callback(){
     printcolor y "Input Mask (1,2,4,7):"
     read -p "" mask
 
-    launch_command "sudo ./idll-test.exe --pic-batteries-voltage "$low1,$low2,$low3" -- --EBOARD_TYPE EBOARD_ADi_SC1X --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU]"
+    launch_command "sudo ./idll-test.exe --pic-batteries-voltage "$low1,$low2,$low3" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU]"
     compare_result "$result" "batteriesGet.Volts1=$low1, batteriesGet.Volts2=$low2, batteriesGet.Volts3=$low3"
 
      #use callback function to detect if any matched event in log file
@@ -72,8 +72,8 @@ pic_battery_low_callback(){
       "Sram2= $low3"
     )
     title_list b mesg[@]
-    print_command "sudo ./idll-test.exe --INTERVAL $interval --PIN_MASK 0x0$mask -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_BatLow_Manual [CALLBACK][PIC][MANU]"
-    sudo ./idll-test.exe --INTERVAL $interval --PIN_MASK 0x0$mask -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_BatLow_Manual [CALLBACK][PIC][MANU]
+    print_command "sudo ./idll-test.exe --INTERVAL $interval --PIN_MASK 0x0$mask -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_BatLow_Manual [CALLBACK][PIC][MANU]"
+    sudo ./idll-test.exe --INTERVAL $interval --PIN_MASK 0x0$mask -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_BatLow_Manual [CALLBACK][PIC][MANU]
 
     printcolor b "Enter to retest, or [q] key to exit..."
     read -p "" input
@@ -95,7 +95,7 @@ pic_battery_warning(){
   while true ; do
     pic_battery_preliminary
     battery_wanring_reset "low"
-    launch_command "sudo ./idll-test.exe --pic-batteries-voltage "$low1,$low2,$low3" -- --EBOARD_TYPE EBOARD_ADi_SC1X --section BatSetGetWarningVoltageManual [PIC][BATTERY][MANU]"
+    launch_command "sudo ./idll-test.exe --pic-batteries-voltage "$low1,$low2,$low3" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section BatSetGetWarningVoltageManual [PIC][BATTERY][MANU]"
     compare_result "$result" "batteriesGet.Volts1=$low1, batteriesGet.Volts2=$low2, batteriesGet.Volts3=$low3"
 
     #loop every minute within 12 minute to confirm if pic generate related pic battery warning event manually
@@ -137,7 +137,7 @@ pic_battery_warning_callback(){
     printcolor y "Input Mask (1,2,4,7):"
     read -p "" mask
 
-    launch_command "sudo ./idll-test.exe --pic-batteries-voltage "$low1,$low2,$low3" -- --EBOARD_TYPE EBOARD_ADi_SC1X --section BatSetGetWarningVoltageManual [PIC][BATTERY][MANU]"
+    launch_command "sudo ./idll-test.exe --pic-batteries-voltage "$low1,$low2,$low3" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section BatSetGetWarningVoltageManual [PIC][BATTERY][MANU]"
     compare_result "$result" "batteriesGet.Volts1=$low1, batteriesGet.Volts2=$low2, batteriesGet.Volts3=$low3"
 
      #use callback function to detect if any matched event in log file
@@ -148,8 +148,8 @@ pic_battery_warning_callback(){
       "Sram2= $low3"
     )
     title_list b mesg[@]
-    print_command "sudo ./idll-test.exe --INTERVAL $interval --PIN_MASK 0x0$mask -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_BatWarn_Manual [CALLBACK][PIC][MANU]"
-    sudo ./idll-test.exe --INTERVAL $interval --PIN_MASK 0x0$mask -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Callback_PIC_BatWarn_Manual [CALLBACK][PIC][MANU]
+    print_command "sudo ./idll-test.exe --INTERVAL $interval --PIN_MASK 0x0$mask -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_BatWarn_Manual [CALLBACK][PIC][MANU]"
+    sudo ./idll-test.exe --INTERVAL $interval --PIN_MASK 0x0$mask -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_BatWarn_Manual [CALLBACK][PIC][MANU]
 
 #    printcolor y "Start to check PIC event if there is battery event..."
 #    confirm_pic_message "battery_alarm" "newest_unread" "all" "check"
@@ -200,8 +200,8 @@ pic_battery_time_detection() {
 #===============================================================
 GetByEvent() {
   title b "check pic battery voltage by event"
-  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_GetPICEvent_and_CheckPICBatteryVoltage"
-  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
+  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_GetPICEvent_and_CheckPICBatteryVoltage"
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
 }
 
 #===============================================================
@@ -209,8 +209,8 @@ GetByEvent() {
 #===============================================================
 GetDirect() {
   title b "check pic battery voltage directly"
-  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_Battery_PICEventByType"
-  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section PIC_Battery_PICEventByType
+  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_Battery_PICEventByType"
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_Battery_PICEventByType
 }
 
 

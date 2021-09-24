@@ -4,12 +4,12 @@ loop_time=$(date +%s --date="+24 hour")
 file_name="all_test_cases_auto_linux.sh"
 times=0
 other() {
-  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X "Scenario: adiWatchdogSetSystemRestart" -s"
+  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 "Scenario: adiWatchdogSetSystemRestart" -s"
 
-  other=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X "Scenario: adiWatchdogSetSystemRestart" -s)
+  other=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 "Scenario: adiWatchdogSetSystemRestart" -s)
   echo "$other"
   echo "================================================================================================" >> result.log
-  echo "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X "Scenario: adiWatchdogSetSystemRestart" -s" >> result.log
+  echo "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 "Scenario: adiWatchdogSetSystemRestart" -s" >> result.log
   echo "================================================================================================" >> result.log
   echo "$other" >> result.log
 }

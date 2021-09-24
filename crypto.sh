@@ -7,7 +7,7 @@ source ./common_func.sh
 #===============================================================
 Crypto_Serial_ConigZone(){
   title b "Check crypto serial number/ go get crypto config zone"
-  launch_command "sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Crypto"
+  launch_command "sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Crypto"
 }
 
 
@@ -17,8 +17,8 @@ Crypto_Serial_ConigZone(){
 CryptoEncode_SHA(){
   title b "Encode string in SHA mode by crypto"
   read -p "Input string you need to generate SHA256 key: " input
-  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Crypto_SHA"
-  result1=$(printf $input | sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Crypto_SHA)
+  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Crypto_SHA"
+  result1=$(printf $input | sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Crypto_SHA)
   echo "$result1"
 
   #start to generate sha256 key by OS to compare if both OS/idll have the same key
@@ -56,7 +56,7 @@ CryptoEncode_SHA(){
 #===============================================================
 CryptoEncode_AES(){
   title b "set/get key and decode/encode string in AES 128/256 bit"
-  launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_SC1X --section Crypto_AES"
+  launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Crypto_AES"
 
 }
 
