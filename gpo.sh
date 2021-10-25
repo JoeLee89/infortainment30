@@ -34,10 +34,17 @@ Blink() {
   #test basic blink / period test
   title b "Reset blinking function...   reset all port to high, before test... "
   if [ "$1" == "sa3" ]; then
-    launch_command "sudo ./idll-test.exe --PORT_VAL 65535 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort"
-    compare_result "$result" "Port value: 65535"
+    for (( i = 0; i < 16; i++ )); do
+      launch_command "sudo ./idll-test.exe --PIN_NUM $i --PERIOD 0 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+    done
+    launch_command "sudo ./idll-test.exe --PORT_VAL 4294967295 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort"
+#    compare_result "$result" "Port value: 65535"
   else
-    sudo ./idll-test.exe --PORT_VAL 4294967295 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort
+    for (( i = 0; i < 32; i++ )); do
+      launch_command "sudo ./idll-test.exe --PIN_NUM $i --PERIOD 0 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+    done
+    launch_command "sudo ./idll-test.exe --PORT_VAL 4294967295 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort"
+
   fi
 
   title b "Change DUTY CYCLE value"
