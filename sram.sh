@@ -481,10 +481,9 @@ Sram_Mirror_2_2_Lec1(){
       verify_result "$result"
 
       #write data in bank1 , the address will refer to bank1 first address + $i parameter
-      if [[ "${bank_address[1]}" && "$bank_amount" -lt 2 ]]; then
+      if [[ "${bank_address[1]}" && "$bank_amount" -gt 2 ]]; then
         launch_command "sudo ./idll-test.exe --sram-write $mirror_mode:$((i+bank_address[1])):${write_data[$m]} -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Manual_write"
         verify_result "$result"
-
       fi
 
       #comfirm sram capacity with mirror mode 4
@@ -518,7 +517,7 @@ Sram_Mirror_2_2_Lec1(){
 #      printf  "$result\n"
       compare_result "$result" "$data"
 
-      #bank2 data compare with mirror2
+      #bank1 data compare with mirror2
       if [[ "${bank_address[1]}" && "$bank_amount" -lt 2 ]]; then
         launch_command "sudo ./idll-test.exe --sram-read $mirror_mode:$((i+bank_address[1])):1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Manual_read"
         verify_result "$result"

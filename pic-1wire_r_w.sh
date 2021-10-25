@@ -7,7 +7,7 @@ write_data
 size_check() {
   local result i
   for ((i = 0; i < 3; i++)); do
-    result=$(sudo ./idll-test.exe --dallas-eeprom-write 0:0:255 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write | grep -i "device $i" | sed "s/1Wire - device $i size: //g" | sed "s/\s//g")
+    result=$(sudo ./idll-test.exe --dallas-eeprom-write 0:0:255 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write | grep -i "device $i" | sed "s/1Wire - device $i size: //g" | sed "s/1Wire-device$i//g" | sed "s/size://g" |sed "s/\s//g")
     if [[ "$result" && "$result" -ne 0 ]]; then
       size[$i]=$result
       wire_number=${#size[@]}
@@ -248,7 +248,7 @@ read_data() {
   local n=0
   local content p data_length
 
-  data_length=$1
+  data_length=$(($1+1))
   #  title "writing data : $1"
   #  printf "data_length=$data_length\n"
   launch_command "sudo ./idll-test.exe --dallas-eeprom-read $2:0:$data_length -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_read"

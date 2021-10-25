@@ -61,7 +61,7 @@ SetPin_Bsec_Backplan(){
 
   rest=$( sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section User_LED_SetPort )
   rest=$( sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Mainboard_User_LED_SetPort )
-  rest=$( sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC --section User_LED_SetPort )
+  rest=$( sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section User_LED_SetPort )
 
   for all in 0 1 2 3;do
     for status in "true" "false"; do
@@ -100,7 +100,7 @@ SetPin_Bsec_Mainboard(){
 
   rest=$( sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section User_LED_SetPort )
   rest=$( sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Mainboard_User_LED_SetPort )
-  rest=$( sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_BSEC --section User_LED_SetPort )
+  rest=$( sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section User_LED_SetPort )
 
   for all in 0 1 2 3;do
     for status in "true" "false"; do
@@ -110,7 +110,7 @@ SetPin_Bsec_Mainboard(){
 #      printcolor b "====================="
 #      read -p "enter key to continue..."
       sleep 2
-#      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL $status -- --EBOARD_TYPE EBOARD_ADi_BSEC --section User_LED_SetPin"
+#      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL $status -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section User_LED_SetPin"
       launch_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL $status -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Mainboard_User_LED_SetPin"
 
       case $status in
@@ -143,7 +143,7 @@ SetPin_Lec1(){
 #      printcolor b "====================="
 #      read -p "enter key to continue..."
       sleep 2
-      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL $status -- --EBOARD_TYPE EBOARD_ADi_BSEC --section Mainboard_User_LED_SetPin"
+      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL $status -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Mainboard_User_LED_SetPin"
 
       case $status in
         true)
