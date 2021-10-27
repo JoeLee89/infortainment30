@@ -1,8 +1,19 @@
 #!/bin/bash
 source ./common_func.sh
+times=0
 loop_time=$(date +%s --date="+12 hour")
 file_name="lec1_auto.bat"
-times=0
+
+
+#set start time will make the program pause, until the setting time reach
+#input start time format ex. "10/26/21-11" to start setting wait time, or set to 0 to skip the function
+#start_time="10/26/21-11"
+start_time=0
+
+#to set others=1 will set the other() function launch, if your project support the script
+#or just set to =0 to skip the test
+others_script=0
+
 other() {
   print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 "Scenario: adiWatchdogSetSystemRestart" -s"
 
@@ -14,24 +25,32 @@ other() {
   echo "$other" >> result.log
 }
 
-#while true; do
-#  date=$(date '+%D-%k')
-#  if [[ $date =~ '10/23/21-17' ]]; then
-#    break
-#  fi
-#  sleep 5
-#  echo $date
-#  echo 'wait...'
-#
-#done
+wait_times() {
+  while true; do
+    date=$(date '+%D-%k')
+    if [[ "$date" =~ $start_time ]]; then
+      break
+    fi
+    sleep 5
+    echo $date
+    echo 'wait...'
 
+  done
+}
+
+#====================================================
+if [[ "$start_time" -ne 0 ]]; then
+  wait_times
+fi
 
 while true; do
   ((times++))
   echo "<<Times=$times>>" >> result.log
-
   echo "$(date +%D-%T)" >>result.log
-#  other
+
+  if [[ "$others_script" -ne 0 ]]; then
+    other
+  fi
 
   while read line; do
     con=$(echo "$line" | grep -i "idll-test" | grep -v "#" | sed "s/\r//g")
