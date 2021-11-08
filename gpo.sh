@@ -161,7 +161,46 @@ repeat_blink(){
 #  sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort
 #  sudo ./idll-test.exe --PIN_NUM 65535 --PERIOD 0 --DUTY_CYCLE 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink
 }
+#===============================================================
+#Brightness for LEC1 A3
+#===============================================================
+## this script need to add correct script
+Brightness(){
+  brightness=("10" "9" "8" "7" "6" "5" "4" "3" "2" "1" "0")
+  for led in $(seq 0 11);do
+    for brightness_value in "${brightness[@]}"; do
+      printcolor r "LED: $led"
+      printcolor r "Setting Brightness: $brightness_value"
 
+      if [ "$brightness_value" == 0 ]; then
+        printcolor r "Note: the LED will stop blinking/ turned LED OFF, while brightness = 0"
+      elif [ "$brightness_value" == 10 ]; then
+        printcolor r "Note: the LED will stop blinking/ turned LED SOLID ON, while brightness = 10"
+      fi
+
+      printcolor w "Enter to test brightness setting."
+      read -p ""
+      launch_command "sudo ./idll-test.exe --PIN_NUM $led --BLINK 100 --DUTY_CYCLE 50 --BRIGHTNESS $brightness_value -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_Drive_SetBlink"
+      compare_result "result" "$brightness_value"
+
+    done
+
+  done
+
+}
+
+Brightness_loop(){
+  local value led
+  for all in $(seq 0 100); do
+    value=$(shuf -i 0-10 -n 1)
+    led=$(shuf -i 0-31 -n 1)
+    launch_command "sudo ./idll-test.exe --PIN_NUM $led --BLINK 100 --DUTY_CYCLE 50 --BRIGHTNESS $value -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_Drive_SetBlink"
+    compare_result "result" "$value"
+
+  done
+}
+
+Brightness
 #===============================================================
 #LED Set port function test
 #===============================================================
@@ -292,6 +331,10 @@ SetPin() {
     launch_command "sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort"
   fi
 }
+#===============================================================
+#Brightness test
+#===============================================================
+
 
 #===============================================================
 #Bad parameter test

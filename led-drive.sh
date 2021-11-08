@@ -111,8 +111,6 @@ LED(){
       compare_result "$result" "nBlink: $blink"
     done
 
-
-
     #just disable the led not te be tested.
     read -p "enter to reset LED status..."
     sudo ./idll-test.exe --PIN_NUM $all --BLINK 0 --DUTY_CYCLE 0 --BRIGHTNESS 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_Drive_SetBlink
