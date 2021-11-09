@@ -161,6 +161,17 @@ repeat_blink(){
 #  sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort
 #  sudo ./idll-test.exe --PIN_NUM 65535 --PERIOD 0 --DUTY_CYCLE 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink
 }
+
+All_blink(){
+  printcolor w "How many led is supported for the project?"
+  read -p "" amount
+  for (( i = 0; i < amount; i++ )); do
+    launch_command "sudo ./idll-test.exe --PIN_NUM $i --PERIOD 1000 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+  done
+
+
+}
+
 #===============================================================
 #Brightness for LEC1 A3
 #===============================================================
@@ -200,7 +211,7 @@ Brightness_loop(){
   done
 }
 
-Brightness
+
 #===============================================================
 #LED Set port function test
 #===============================================================
@@ -331,10 +342,6 @@ SetPin() {
     launch_command "sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort"
   fi
 }
-#===============================================================
-#Brightness test
-#===============================================================
-
 
 #===============================================================
 #Bad parameter test
@@ -372,7 +379,9 @@ while true; do
   printf "${COLOR_RED_WD}5. (SCXX/LEC1/BSEC)SET PIN ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}6. (SA3)SET PORT ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}7. (SA3)SET PIN ${COLOR_REST}\n"
-  printf "${COLOR_RED_WD}8. BAD PARAMETER ${COLOR_REST}\n"
+  printf "${COLOR_RED_WD}8. BRIGHTNESS ${COLOR_REST}\n"
+  printf "${COLOR_RED_WD}9. BLINK LOOP ${COLOR_REST}\n"
+  printf "${COLOR_RED_WD}10. BAD PARAMETER ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}======================================${COLOR_REST}\n"
   printf "CHOOSE ONE TO TEST: "
   read -p "" input
@@ -392,6 +401,10 @@ while true; do
   elif [ "$input" == 7 ]; then
     SetPin sa3
   elif [ "$input" == 8 ]; then
+    SetPin Brightness
+  elif [ "$input" == 9 ]; then
+    All_blink
+  elif [ "$input" == 10 ]; then
     BadParameter
 
   fi

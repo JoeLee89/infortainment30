@@ -127,10 +127,20 @@ SetGetPort_SCXX(){
 }
 
 meter_detection(){
-  local l
-  expected_getport_plug_value="0xFFFF"
-  meter_total_pin=9
-  count=0
+  local l i
+  read -p "Input the total supported pin number or Enter for 8 pins hard meter (8 or 16): " pin_number
+  pin_number=${pin_number:-8}
+
+  if [ "$pin_number" -eq 16 ]; then
+    expected_getport_plug_value="0xFFFF"
+    meter_total_pin=9
+  else
+    expected_getport_plug_value="0xFF"
+    meter_total_pin=8
+  fi
+#  expected_getport_plug_value="0xFFFF"
+#  meter_total_pin=9
+#  count=0
   for i in "plug" "unplug"; do
     title b "***************Now please make cable in $i status..*************************"
     read -p ""
@@ -141,14 +151,19 @@ meter_detection(){
 
         for (( l = 0; l < $meter_total_pin; l++ )); do
           title b "Now get detection ( PORT ) value"
-
           launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPort"
           compare_result "$result" "$expected_getport_plug_value"
 
           printf "\n\n"
           title b "Now get detection ( PIN ) value"
           launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
-          compare_result "$result" "pin: $l, status: true"
+          if [[ "$result" =~ "Pin ID" ]]; then
+            compare_result "$result" "Pin ID: $l  Status: true"
+            Pin ID: 0  Status: true
+          elif [[ "$result" =~ "pin:" ]]; then
+            compare_result "$result" "pin: $l, status: true"
+          fi
+
         done
 
         read -p "Enter to continue test or press [q] to skip get port function..." input
@@ -185,16 +200,16 @@ meter_detection(){
 
 meter_detection_loop(){
 
-  meter_total_pin=9
-
   read -p "Input the total supported pin number or Enter for 16 pins hard meter (8 or 16): " pin_number
   read -p "input how many minutes your need to test : " set_time
   pin_number=${pin_number:-16}
   case $pin_number in
   16)
+    meter_total_pin=9
     expected_getport_plug_value="0xFFFF"
     ;;
   8)
+    meter_total_pin=8
     expected_getport_plug_value="0xFF"
     ;;
   esac
@@ -244,7 +259,8 @@ meter_detection_loop(){
           compare_result "$result" "0x0"
 
           title b "Now get detection ( PIN ) value"
-          launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
+#          launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
+          launch_command "sudo ./idll-test.exe --PIN_VAL $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
           compare_result "$result" "pin: $l, status: false"
         done
 
@@ -290,8 +306,8 @@ while true; do
   printf  "${COLOR_RED_WD}2. Get PORT / SET PORT /GET METER SENSE (BSEC/BACC only)${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}3. Get PORT / SET PORT /GET METER SENSE (SA3)${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}4. GET PIN / SET PIN / GET METER SENSE (SA3)${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}5. Get PORT / SET PORT /GET METER SENSE (SCxx)${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}6. GET PIN / SET PIN / GET METER SENSE (SCxx)${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}5. Get PORT / SET PORT /GET METER SENSE ${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}6. GET PIN / SET PIN / GET METER SENSE ${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}7. METER DETECTION PIN/PORT ${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}8. METER DETECTION PIN/PORT LOOP${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}=========================================================${COLOR_REST}\n"
@@ -314,6 +330,7 @@ while true; do
       meter_detection
   elif [ "$input" == 8 ]; then
       meter_detection_loop
+
   fi
 
 done

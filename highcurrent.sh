@@ -160,7 +160,7 @@ BadParameter() {
 while true; do
   printf  "${COLOR_RED_WD}1. SETPORT${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}2. SETPIN${COLOR_REST}\n"
-  printf  "${COLOR_RED_WD}3. BLINK/DUTY/BRIGHTNESS (LEC1 A3)${COLOR_REST}\n"
+  printf  "${COLOR_RED_WD}3. BLINK/DUTY/BRIGHTNESS${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}4. PARAMETER${COLOR_REST}\n"
   printf  "${COLOR_RED_WD}==================================${COLOR_REST}\n"
   printf  "CHOOSE ONE TO TEST: \n"

@@ -113,9 +113,19 @@
 #done
 #
 
+#while true; do
+##  sensors
+#  lscpu | grep -i 'CPU MHz:'
+#  sleep 1
+#
+#done
 while true; do
 #  sensors
-  lscpu | grep -i 'CPU MHz:'
-  sleep 1
+  re=$(sudo ./idll-test.exe --serial-port1 LEC1_COM1 --serial-port2 LEC1_COM2 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SerialPort_Nullmodem)
+  if [[ "$re" =~ "failed" ]]; then
+    read -p "got error log"
+  fi
+
+  printf "$re"
 
 done
