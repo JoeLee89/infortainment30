@@ -165,8 +165,24 @@ repeat_blink(){
 All_blink(){
   printcolor w "How many led is supported for the project?"
   read -p "" amount
+
   for (( i = 0; i < amount; i++ )); do
     launch_command "sudo ./idll-test.exe --PIN_NUM $i --PERIOD 1000 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+  done
+
+  while true ; do
+    printf "Press 'x' to reset LED / exit the blink loop.. \r"
+
+    read -rsn 1 -t 0.01 input
+
+    if [ "$input" == "x" ]; then
+
+      for (( x = 0; x < amount; x++ )); do
+        launch_command "sudo ./idll-test.exe --PIN_NUM $x --PERIOD 0 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+      done
+      return
+    fi
+
   done
 
 
@@ -349,22 +365,21 @@ SetPin() {
 BadParameter() {
   printf "${COLOR_RED_WD}Bad parameter test ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}===================${COLOR_REST}\n"
-  read -p "enter key to continue..." continue
+  read -p "enter key to continue..."
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PIN_NUM 999999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPin ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PIN_NUM 999999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPin
+  command_line=(
+  "sudo ./idll-test.exe --PIN_NUM 9999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPin"
+  "sudo ./idll-test.exe --PIN_NUM 1 --PIN_VAL dd -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPin"
+  "sudo ./idll-test.exe --PORT_VAL 999999999999999 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort"
+  "sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 65536 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+  "sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 0 --DUTY_CYCLE 100 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+  )
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PIN_NUM 1 --PIN_VAL dd -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPin ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PIN_NUM 1 --PIN_VAL dd -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPin
+  for command in "${command_line[@]}";do
+    launch_command "$(echo "$command")"
+    compare_result "$result" "failed" "skip"
+  done
 
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PORT_VAL 999999999999999 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PORT_VAL 999999999999999 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort
-
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 65536 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 65536 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink
-
-  printf "${COLOR_RED_WD}sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 0 --DUTY_CYCLE 100 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink ${COLOR_REST}\n"
-  sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 0 --DUTY_CYCLE 100 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink
 }
 
 #===============================================================

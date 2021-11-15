@@ -32,7 +32,7 @@ compare_result() {
       echo "$1"
       printf "\n"
       printcolor r "================================================================"
-      printcolor r "Expected result above doesn't include : ($2) or result failed"
+      printcolor r "Expected result above doesn't include : ($2) or result failed1"
       printcolor r "================================================================"
       printcolor r "Result: FAIL"
       printcolor r "================================================================"

@@ -174,7 +174,7 @@ EepromReadWrite_RandomSamePattern(){
 }
 
 read_write_directly(){
-  loal target size
+  local target size
   read -p "Input how many byte need to write, or just enter to test with all supported size for each EEPROM: " size
   read -p "Input which EEPROM needed to write, or just enter to test with all supported EEPROM(1-2): " target
   write_RandomSamePattern "$size" "$target" "random"
