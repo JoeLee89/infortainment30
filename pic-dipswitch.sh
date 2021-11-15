@@ -41,7 +41,7 @@ DipSwitch_GetportPin_BSEC() {
 #===============================================================
 while true; do
   printf "\n"
-  printf "${COLOR_RED_WD}1. DIP SWITCH GET PORT/PIN (SCxx/SA3/BSEC_Backplan) ${COLOR_REST}\n"
+  printf "${COLOR_RED_WD}1. DIP SWITCH GET PORT/PIN (SCxx/SA/LEC/BSEC_Backplan) ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}2. DIP SWITCH GET PORT/PIN (BSEC_Mainboard_DIP_SW) ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}======================================${COLOR_REST}\n"
   printf "CHOOSE ONE TO TEST: "
