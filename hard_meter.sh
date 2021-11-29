@@ -32,13 +32,13 @@ GetSetPort_bsec(){
 
 GetSetPin_SA3(){
   title b "Start counting hard meter by PIN"
-  read -p "enter key to test.." continue
+  read -p "enter key to test.."
   local i
 
   for (( i = 0; i < 16; i++ )); do
     if [[ "$i" = 8 ]]; then
       printcolor r "going to test hard meter (9-16)"
-      read -p "enter key to test..." continue
+      read -p "enter key to test..."
     fi
     launch_command "sudo ./idll-test.exe --PIN_VAL $i --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_ByPin"
     compare_result "$result" "passed"
@@ -49,7 +49,7 @@ GetSetPin_SA3(){
 
 SetGetPort_SA3(){
   title b "Start counting hard meter by Port (1-8)"
-  read -p "enter key to test" continue
+  read -p "enter key to test"
   hex=$((2#1))
 
   while true; do
@@ -61,11 +61,11 @@ SetGetPort_SA3(){
     case $hex in
       $((2#100000000)))
         title b "going to test hard meter (9-16)"
-        read -p "enter key to test..." continue
+        read -p "enter key to test..."
         ;;
       $((2#10000000000000000)))
         title b "going to test hard meter (1-16) set high for 1 mins"
-        read -p "enter key to test..." continue
+        read -p "enter key to test..."
 
           #loop 1 min to confirm meter works fine
           after=$( date +%s --date="+1 minute")
@@ -86,7 +86,7 @@ SetGetPort_SA3(){
 
 GetSetPin_SCXX(){
   title b "Start counting hard meter by PIN"
-  read -p "enter key to test.." continue
+  read -p "enter key to test.."
 
   hex=$((2#1))
   for (( i = 0; i < 8; i++ )); do
@@ -99,7 +99,7 @@ GetSetPin_SCXX(){
 
 SetGetPort_SCXX(){
   title b "Start counting hard meter by Port (1-8)"
-  read -p "enter key to test" continue
+  read -p "enter key to test"
   hex=$((2#1))
 
   while true; do
@@ -112,7 +112,8 @@ SetGetPort_SCXX(){
     fi
 
   done
-
+  printcolor y "It's going to loop all hard meter by set port for 1 minute, press Enter to continue."
+  read -p ""
   after=$( date +%s --date="+1 minute")
   while true; do
       now=$(date +%s)
@@ -157,12 +158,13 @@ meter_detection(){
           printf "\n\n"
           title b "Now get detection ( PIN ) value"
           launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
-          if [[ "$result" =~ "Pin ID" ]]; then
-            compare_result "$result" "Pin ID: $l  Status: true"
-            Pin ID: 0  Status: true
-          elif [[ "$result" =~ "pin:" ]]; then
-            compare_result "$result" "pin: $l, status: true"
-          fi
+          result_check "pin" "true" "$result" "$l"
+
+#          if [[ "$result" =~ "Pin ID" ]]; then
+#            compare_result "$result" "Pin ID: $l  Status: true"
+#          elif [[ "$result" =~ "pin:" ]]; then
+#            compare_result "$result" "pin: $l, status: true"
+#          fi
 
         done
 
@@ -184,7 +186,13 @@ meter_detection(){
 
           title b "Now get detection ( PIN ) value"
           launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
-          compare_result "$result" "pin: $l, status: false"
+
+          result_check "pin" "false" "$result" "$l"
+#          if [[ "$result" =~ "Pin ID" ]]; then
+#            compare_result "$result" "Pin ID: $l  Status: false"
+#          elif [[ "$result" =~ "pin:" ]]; then
+#            compare_result "$result" "pin: $l, status: false"
+#          fi
         done
 
         read -p "enter key continue test or press [q] to skip get port function..." input
@@ -198,11 +206,33 @@ meter_detection(){
   done
 }
 
-meter_detection_loop(){
+#s1: pin / port
+#s2: expected value
+#s3: the result of launching command line
+#s4: set pin ID
+result_check(){
 
+  case $1 in
+  'port')
+    compare_result "$3" "$2"
+    ;;
+  'pin')
+    if [[ "$3" =~ "Pin ID" ]]; then
+      compare_result "$3" "Pin ID: $4  Status: $2"
+    elif [[ "$3" =~ "pin:" ]]; then
+      compare_result "$3" "pin: $4, status: $2"
+    fi
+    ;;
+  esac
+
+
+}
+
+meter_detection_loop(){
   read -p "Input the total supported pin number or Enter for 16 pins hard meter (8 or 16): " pin_number
   read -p "input how many minutes your need to test : " set_time
-  pin_number=${pin_number:-16}
+  pin_number=${pin_number:-8}
+  set_time=${set_time:-1}
   case $pin_number in
   16)
     meter_total_pin=9
@@ -229,16 +259,17 @@ meter_detection_loop(){
         for (( l = 0; l < $meter_total_pin; l++ )); do
           title b "Now get detection ( PORT ) value"
           launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPort"
-          compare_result "$result" "$expected_getport_plug_value"
+          result_check "port" "$expected_getport_plug_value" "$result"
 
           printf "\n\n"
           title b "Now get detection ( PIN ) value"
           launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
-          compare_result "$result" "pin: $l, status: true"
+          result_check "pin" "true" "$result" "$l"
+#
 
         done
 
-        #to get all port/pin status finisehd first, and will be interrupted if one of them is failed.
+        #to get all port/pin status finished first, and will be interrupted if one of them is failed.
         if [[ "$now" > "$after" || "$status" == "fail" ]]; then
           break
         fi
@@ -256,12 +287,10 @@ meter_detection_loop(){
         for (( l = 0; l < $meter_total_pin; l++ )); do
           title b "Now get detection ( PORT ) value"
           launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPort"
-          compare_result "$result" "0x0"
+          result_check "port" "0x0" "$result"
 
           title b "Now get detection ( PIN ) value"
-#          launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
-          launch_command "sudo ./idll-test.exe --PIN_VAL $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
-          compare_result "$result" "pin: $l, status: false"
+          launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
         done
 
         if [[ "$now" > "$after" || "$status" == "fail" ]]; then
