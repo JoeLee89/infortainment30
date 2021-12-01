@@ -18,7 +18,7 @@ Blink() {
     duty_cycle_value=("1" "19" "20" "49" "50" "80" "99")
   elif [ "$1" == "lec1" ]; then
     led_amount=31
-    period_verify_value=("2" "100" "5000" "40000" "65500" "65535")
+    period_verify_value=("1" "99" "151" "1000" "9999" "10000")
     duty_cycle_value=("1" "19" "20" "49" "50" "80" "99")
   fi
   ########################################################################
@@ -54,7 +54,7 @@ Blink() {
       scxx=$(echo "$period*0.1" | bc)
       printf "${COLOR_BLUE_WD}LED: $all ${COLOR_REST}\n"
       printf "${COLOR_BLUE_WD}Duty cycle:${COLOR_RED_WD} $duty_cyclell ${COLOR_REST}\n"
-      printf "${COLOR_BLUE_WD}period (LEC1: 0/1=disable blinking): $period = $(($period * 10))ms ${COLOR_REST}\n"
+      printf "${COLOR_BLUE_WD}period (LEC1: 0/1=disable blinking): $period = $period ms ${COLOR_REST}\n"
       printf "${COLOR_BLUE_WD}period (SCxx/SA3 : 0/1=disable blinking): $period = $scxx ms ${COLOR_REST}\n"
       read -p "enter key to continue above test..." continue
 
@@ -88,12 +88,12 @@ Blink() {
       scxx=$(echo "$perioddd*0.1" | bc)
       printf "${COLOR_BLUE_WD}LED: $all ${COLOR_REST}\n"
       printf "${COLOR_BLUE_WD}Duty cycle: $duty_cycle ${COLOR_REST}\n"
-      printf "${COLOR_BLUE_WD}period(LEC1 : 0/1=disable blinking): ${COLOR_RED_WD}$perioddd  = $(($perioddd * 10))ms ${COLOR_REST}\n"
+      printf "${COLOR_BLUE_WD}period(LEC1 : 0/1=disable blinking): ${COLOR_RED_WD}$perioddd  = $perioddd ms ${COLOR_REST}\n"
       printf "${COLOR_BLUE_WD}period(SCxx/SA3: 0=disable blinking): ${COLOR_RED_WD}$perioddd  = $scxx ms ${COLOR_REST}\n"
 
       if [ $perioddd == 0 ] || [ $perioddd == 1 ]; then
-        printf "${COLOR_RED_WD}Note: (LEC1) period =1/0 should stopping blinking!! \n${COLOR_REST}"
-        printf "${COLOR_RED_WD}Note: (SCxx/SA3) period = 0 should stopping blinking!! \n${COLOR_REST}"
+        printf "${COLOR_RED_WD}Note: (LEC1) period =1/0 should stop blinking!! \n${COLOR_REST}"
+        printf "${COLOR_RED_WD}Note: (SCxx/SA3) period = 0 should stop blinking!! \n${COLOR_REST}"
       fi
 
       read -p "enter key to continue above test..." continue
@@ -119,6 +119,7 @@ Blink() {
 
     done
 
+    #confirm LED status after disabling blinking
     title b "Start to disable LED blinking function"
     printcolor r "(SCxx/SA3) LED: $all should be back to solid on as it's set port before ..."
     printcolor r "(LEC1) LED: $all won't keep its original state, it on/off randomly ..."
@@ -128,9 +129,82 @@ Blink() {
 
   done
 
+
   title b "All LED should be OFF"
   read -p "enter key to continue..." continue
   sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort
+
+
+}
+
+disabling_blinking_muti_condition(){
+  local period=1000 duty_cycle=50 brightness=50
+  #LED multi disabling-blinking test
+  printcolor r "How many DO pins is the project supported?"
+  read -p "" amount
+  amount=${amount:-32}
+  title b "Enter to test LED multi disabling-blinking status."
+  for led in $(seq 0 $((amount-1))); do
+    case $1 in
+    "setpin")
+      for i in "true" "false" ; do
+
+        launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD $period --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+        title r "If the following script has error, please make sure the project supports BRIGHTNESS function."
+        launch_command "sudo ./idll-test.exe --LED_NUM $led --BRIGHTNESS $brightness -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness_with_parameter [ADiDLL][DO][Brightness]"
+
+        case $i in
+        "true")
+          printcolor y "LED$led is going to set solid ON by set pin."
+          printcolor y "Make sure it won't be blinking and should keep solid on."
+          printcolor w "Enter to test."
+          read -p ""
+          launch_command "sudo ./idll-test.exe --PIN_NUM $led --PIN_VAL $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPin"
+          read -p ""
+        ;;
+
+        "false")
+          printcolor y "LED$led is going to set solid OFF by set pin."
+          printcolor y "Make sure it won't be blinking and should keep OFF."
+          printcolor w "Enter to test."
+          read -p ""
+          launch_command "sudo ./idll-test.exe --PIN_NUM $led --PIN_VAL $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPin"
+          read -p ""
+        ;;
+        esac
+      done
+      ;;
+
+    "brightness")
+      for i in "true" "false" ; do
+        launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD $period --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+        title r "If the following script has error, please make sure the project supports BRIGHTNESS function."
+        launch_command "sudo ./idll-test.exe --LED_NUM $led --BRIGHTNESS $brightness -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness_with_parameter [ADiDLL][DO][Brightness]"
+
+        case $i in
+        "true")
+          printcolor y "LED$led is going to set solid ON by set brightness=100."
+          printcolor y "Make sure it won't be blinking and should keep solid on."
+          printcolor w "Enter to test."
+          read -p ""
+          launch_command "sudo ./idll-test.exe --LED_NUM $led --BRIGHTNESS 100 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness_with_parameter [ADiDLL][DO][Brightness]"
+          read -p ""
+        ;;
+
+        "false")
+          printcolor y "LED$led is going to set solid OFF by set brightness=0."
+          printcolor y "Make sure it won't be blinking and should keep OFF."
+          printcolor w "Enter to test."
+          read -p ""
+          launch_command "sudo ./idll-test.exe --LED_NUM $led --BRIGHTNESS 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness_with_parameter [ADiDLL][DO][Brightness]"
+          read -p ""
+        ;;
+        esac
+      done
+
+      ;;
+    esac
+  done
 
 
 }
@@ -189,29 +263,38 @@ All_blink(){
 }
 
 #===============================================================
-#Brightness for LEC1 A3
+#Brightness for LEC1 A3 32 DO
 #===============================================================
 ## this script need to add correct script
 Brightness(){
-  brightness=("10" "9" "8" "7" "6" "5" "4" "3" "2" "1" "0")
-  for led in $(seq 0 11);do
+  brightness=("100" "99" "87" "70" "60" "51" "40" "30" "25" "10" "0")
+  local duty_cycle=50 period=1000
+  for led in $(seq 0 31);do
+    #--------------------------------------------------------
+    #test each brightness level with blinking action enabled
     for brightness_value in "${brightness[@]}"; do
-      printcolor r "LED: $led"
-      printcolor r "Setting Brightness: $brightness_value"
+
+      mesg=(
+      "LED: $led"
+      "Period: 1000 ms"
+      "Duty Cycle: 50"
+      "Brightness: $brightness_value"
+      )
+      title_list r mesg[@]
 
       if [ "$brightness_value" == 0 ]; then
-        printcolor r "Note: the LED will stop blinking/ turned LED OFF, while brightness = 0"
-      elif [ "$brightness_value" == 10 ]; then
-        printcolor r "Note: the LED will stop blinking/ turned LED SOLID ON, while brightness = 10"
+        printcolor r "Note: the LED will stop blinking/ turned LED OFF, while brightness = $brightness_value"
+      elif [ "$brightness_value" == 100 ]; then
+        printcolor r "Note: the LED will stop blinking/ turned LED SOLID ON, while brightness = $brightness_value"
       fi
 
       printcolor w "Enter to test brightness setting."
       read -p ""
-      launch_command "sudo ./idll-test.exe --PIN_NUM $led --BLINK 100 --DUTY_CYCLE 50 --BRIGHTNESS $brightness_value -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_Drive_SetBlink"
-      compare_result "result" "$brightness_value"
-
+      launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD $period --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetDoLedBlink"
+#      launch_command "sudo ./idll-test.exe --PIN_NUM $led --BLINK 100 --DUTY_CYCLE 50 --BRIGHTNESS $brightness_value -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_Drive_SetBlink"
+      launch_command "sudo ./idll-test.exe --LED_NUM $led --BRIGHTNESS $brightness_value -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness_with_parameter [ADiDLL][DO][Brightness]"
+      compare_result "$result" "Brightness: $brightness_value"
     done
-
   done
 
 }
@@ -397,6 +480,8 @@ while true; do
   printf "${COLOR_RED_WD}8. BRIGHTNESS ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}9. BLINK LOOP ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}10. BAD PARAMETER ${COLOR_REST}\n"
+  printf "${COLOR_RED_WD}11. DISABLE BRIGHTNESS  ${COLOR_REST}\n"
+  printf "${COLOR_RED_WD}12. DISABLE BLINK  ${COLOR_REST}\n"
   printf "${COLOR_RED_WD}======================================${COLOR_REST}\n"
   printf "CHOOSE ONE TO TEST: "
   read -p "" input
@@ -416,12 +501,15 @@ while true; do
   elif [ "$input" == 7 ]; then
     SetPin sa3
   elif [ "$input" == 8 ]; then
-    SetPin Brightness
+    Brightness
   elif [ "$input" == 9 ]; then
     All_blink
   elif [ "$input" == 10 ]; then
     BadParameter
-
+  elif [ "$input" == 11 ]; then
+    disabling_blinking_muti_condition "brightness"
+  elif [ "$input" == 12 ]; then
+    disabling_blinking_muti_condition "setpin"
   fi
 
 done

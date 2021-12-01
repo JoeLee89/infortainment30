@@ -160,12 +160,6 @@ meter_detection(){
           launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
           result_check "pin" "true" "$result" "$l"
 
-#          if [[ "$result" =~ "Pin ID" ]]; then
-#            compare_result "$result" "Pin ID: $l  Status: true"
-#          elif [[ "$result" =~ "pin:" ]]; then
-#            compare_result "$result" "pin: $l, status: true"
-#          fi
-
         done
 
         read -p "Enter to continue test or press [q] to skip get port function..." input
@@ -186,13 +180,7 @@ meter_detection(){
 
           title b "Now get detection ( PIN ) value"
           launch_command "sudo ./idll-test.exe --HM_PIN_ID $l -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_Detection_ByPin"
-
           result_check "pin" "false" "$result" "$l"
-#          if [[ "$result" =~ "Pin ID" ]]; then
-#            compare_result "$result" "Pin ID: $l  Status: false"
-#          elif [[ "$result" =~ "pin:" ]]; then
-#            compare_result "$result" "pin: $l, status: false"
-#          fi
         done
 
         read -p "enter key continue test or press [q] to skip get port function..." input
@@ -303,32 +291,7 @@ meter_detection_loop(){
   done
 }
 
-
-#
-#increment_port(){
-#
-##  start /B /wait idll-test --PORT_VAL 0x1FF --HM-Int-Count 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_ByPort
-#  read -p "How many hard meter support to your project: " total_port
-#  read -p "How many counting on each meter: " increment_number
-#  l=0
-#  for (( i = 0; i < 6; i++ )); do
-#      m=$((2**$i))
-#      l=$((m+l))
-#      launch_command "sudo ./idll-test.exe --PORT_VAL $l --HM-Int-Count $increment_number -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_ByPort"
-#      compare_result "$result" "adiHardMeterIncrementCounters: $increment_number"
-#      compare_result "$result" "adiHardMeterIncrementCounters Port: $(echo "obase=16;$l|bc")"
-#
-#  done
-#
-#
-#
-#
-#}
-
-
-
 #========================================================================================================
-
 
 while true; do
   printf  "${COLOR_RED_WD}1. GET PIN / SET PIN / GET METER SENSE (BSEC/BACC only)${COLOR_REST}\n"

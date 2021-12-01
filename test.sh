@@ -119,13 +119,25 @@
 #  sleep 1
 #
 #done
+#while true; do
+#
+#  re=$(sudo ./idll-test.exe --serial-port1 LEC1_COM1 --serial-port2 LEC1_COM2 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SerialPort_Nullmodem)
+#  if [[ "$re" =~ "failed" ]]; then
+#    read -p "got error log"
+#  fi
+#
+#  printf "$re"
+#
+#done
+i=0
 while true; do
-#  sensors
-  re=$(sudo ./idll-test.exe --serial-port1 LEC1_COM1 --serial-port2 LEC1_COM2 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SerialPort_Nullmodem)
-  if [[ "$re" =~ "failed" ]]; then
-    read -p "got error log"
+  ((i++))
+  printf "loop=$i"
+  re1=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness [ADiDLL][DO][Brightness])
+  re2=$(sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED)
+  if [[ "$re1" =~ "failed" || "$re2" =~ "failed"  ]]; then
+      printf $re1
+      printf $re2
   fi
-
-  printf "$re"
 
 done
