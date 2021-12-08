@@ -2,7 +2,7 @@
 source ./common_func.sh
 times=0
 loop_time=$(date +%s --date="+12 hour")
-file_name="lec1_auto.bat"
+file_name="lec1_auto_linux.sh"
 
 
 #set start time will make the program pause, until the setting time reach
