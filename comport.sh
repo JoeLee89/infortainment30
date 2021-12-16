@@ -1,8 +1,19 @@
 #!/bin/bash
 source ./common_func.sh
+
+re=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SerialPort_GetPort_Num_Name)
+com_amount=$(echo "$re" | grep -i portcount | sed 's/\s//g')
+com_amount=${com_amount#adi*:}
+for (( i = 0; i < com_amount; i++ )); do
+  port_name=$(echo "$re" | grep -i "PortIndex = $i,")
+  port_name=$(echo "$port_name" | sed 's/\r//g')
+  com_list_amount[$i]=${port_name##adi*= }
+done
+
 #===============================================================
 #com port test on each supported feature
 #===============================================================
+#randam generate data content for feature usage
 number_random() {
   for (( i = 0; i < $1; i++ )); do
     re=$(shuf -i 0-9 -n 1)
@@ -12,7 +23,7 @@ number_random() {
   echo $number
 }
 
-com_list=("LEC1_COM1" "LEC1_COM2")
+#com_list=("LEC1_COM1" "LEC1_COM2")
 baudrate=("110" "300" "600" "1200" "2400" "4800" "9600" "14400" "19200" "38400" "56000" "57600" "115200")
 baudrate_default=115200
 databit=("3" "4")
@@ -32,10 +43,12 @@ data_default=$(number_random read_len_default)
 #Testing with BAUDRATE
 ###################################################
 Feature(){
-  title b "Testing with BAUDRATE"
+
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SerialPort_GetPort_Num_Name
   printcolor w "Now connect each com port with loopback."
   printcolor w "Input com port number you need to test, or Enter to test all"
-  read -p "" input
+  printcolor r "Please refer above list, input the port index number as listed above as 'PortIndex= ??', if you choose to test the single port."
+  read -p "PortIndex = " input
   input=${input:-"all"}
 
 #  board_name=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section adiLibInit)
@@ -47,20 +60,24 @@ Feature(){
 #    port2="COM""$port2"
 #  fi
 
+  if [ "$input" != "all" ]; then
+    com_list=("${com_list_amount[input]}")
+  fi
+#  com_list=("LEC1_COM1")
+#  case $input in
+#  "1")
+#
+#    com_list=("LEC1_COM1")
+#    ;;
+#  "2")
+#    com_list=("LEC1_COM2")
+#    ;;
+#  "all")
+#    com_list=("LEC1_COM1" "LEC1_COM2")
+#    ;;
+#  esac
 
-  case $input in
-  "1")
-
-    com_list=("LEC1_COM1")
-    ;;
-  "2")
-    com_list=("LEC1_COM2")
-    ;;
-  "all")
-    com_list=("LEC1_COM1" "LEC1_COM2")
-    ;;
-  esac
-
+  title b "Testing with BAUDRATE"
   for list in ${baudrate[*]}; do
     for com in ${com_list[*]}; do
       printf "Com port Test setting:"
@@ -185,30 +202,34 @@ Feature(){
 }
 
 PortToPort(){
-  com1="LEC1_COM1"
-  com2="LEC1_COM2"
-  title b "Testing with Port to Port"
-  printcolor w "Now connect com port:($com1) with com port:($com2) with null cable."
+
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SerialPort_GetPort_Num_Name
+  printcolor r "Please refer above list, input the port index number as listed above as 'PortIndex= ??'"
+  printcolor w "Input com port 1 name you need to test"
+  read -p "Port 1 Index = " port1_number
+  printcolor w "Input com port 2 name you need to test"
+  read -p "Port 2 Index = " port2_number
   printcolor  w "How many loop you need to test: (at least 10)"
   read -p "" loop
-  printcolor  w "Input port1 number:"
-  read -p "" port1
-  printcolor  w "Input port2 number:"
-  read -p "" port2
 
-
+  printcolor w "Now connect com port:($port1) with com port:($port2) by null cable."
   loop=${loop:-10}
-  port1=${port1:-1}
-  port2=${port2:-2}
+  port1_number=${port1_number:-0}
+  port2_number=${port2_number:-1}
 
-  board_name=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section adiLibInit)
-  if [[ "$board_name" =~ "LEC1"  ]]; then
-    port1="LEC1_COM""$port1"
-    port2="LEC1_COM""$port2"
-  else
-    port1="COM""$port1"
-    port2="COM""$port2"
-  fi
+
+  port1=${com_list_amount[port1_number]}
+  port2=${com_list_amount[port2_number]}
+  echo "port1=$port1"
+  echo "port2=$port2"
+#  board_name=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section adiLibInit)
+#  if [[ "$board_name" =~ "LEC1"  ]]; then
+#    port1="LEC1_COM""$port1"
+#    port2="LEC1_COM""$port2"
+#  else
+#    port1="COM""$port1"
+#    port2="COM""$port2"
+#  fi
 
   for (( i = 0; i < loop; i++ )); do
     for list in ${read_len[*]}; do
@@ -222,11 +243,11 @@ PortToPort(){
       compare_result "$result" "passed"
     done
   done
+  unset port1 port2 loop
 }
 
 PinFeature(){
-
-  printcolor  w "Input com port number:"
+  printcolor  w "Input com port number (1,2):"
   read -p "" port
   port=${port:-1}
   port="LEC1_COM""$port"
@@ -300,8 +321,6 @@ PinFeature(){
         fi
         ;;
       esac
-
-
   done
 
   title b "Start setting MASK value."

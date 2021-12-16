@@ -70,7 +70,7 @@ Blink() {
   ########################################################################
   printcolor r "How many DO pins is the project supported?"
   read -p "" amount
-  led_amount=${led_amount:-3}
+  led_amount=${led_amount:-2}
   ((led_amount-1))
 
   #loop all pin test
@@ -90,7 +90,8 @@ Blink() {
   done
   launch_command "sudo ./idll-test.exe --PORT_VAL 7 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPort"
 
-
+  #######################################
+  #Change DUTY CYCLE value
   title b "Change DUTY CYCLE value"
   for all in $(seq 0 $led_amount); do
 
@@ -118,15 +119,13 @@ Blink() {
 
       fi
       echo ""
-#      compare_result "$result" "Duty cycle: $duty_cyclell"
-      #read -p "enter key to continue..." continue
-
-      #sleep 1
     done
 
+    ######################################################
+    #Change PERIOD value
     printf "${COLOR_RED_WD}Change PERIOD value ${COLOR_REST}\n"
     printf "${COLOR_RED_WD}======================= ${COLOR_REST}\n\n"
-    read -p "enter key to continue..." continue
+    read -p "Enter to continue..."
 
     for perioddd in "${period_verify_value[@]}"; do
       scxx=$(echo "$perioddd*0.1" | bc)
@@ -140,8 +139,7 @@ Blink() {
         printf "${COLOR_RED_WD}Note: (SCxx/SA3) period = 0 should stop blinking!! \n${COLOR_REST}"
       fi
 
-      read -p "enter key to continue above test..."
-
+      read -p "Enter to continue above test..."
 
       launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD $perioddd --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
       if [[ "$result" =~ "failed" && "$result" =~ "nReadDutyCycle == nDutyCycle" && "$result" =~ "Period: $perioddd" ]]; then
@@ -162,24 +160,22 @@ Blink() {
 #      compare_result "$result" "Period: $perioddd"
 
     done
-
+    ##############################################
     #confirm LED status after disabling blinking
     title b "Start to disable LED blinking function"
     printcolor r "(SCxx/SA3) LED: $all should be back to solid on as it's set port before ..."
     printcolor r "(LEC1) LED: $all won't keep its original state, it on/off randomly ..."
-    read -p "enter key to continue..."
+    read -p "Enter to test..."
     launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD 1 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
 
   done
 
 
   title b "All LED should be OFF"
-  read -p "enter key to continue..."
+  read -p "Enter to continue..."
   launch_command "sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPort"
-#  sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_SetPort
-
-
 }
+
 
 disabling_blinking_muti_condition(){
   local period=1000 duty_cycle=50 brightness=50
