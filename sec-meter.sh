@@ -79,11 +79,13 @@ ShowTextCountValue_AllID(){
     printcolor b "Set/Show text with ID=$all "
     printcolor b "================================"
     printcolor b "Set/Show text with ID=$all "
-    printcolor y "TEXT= adi_dll "
+    printcolor y "TEXT= adidl$all "
     read -p "enter key to continue ... " continue
 
-    print_command "sudo ./idll-test.exe --LOOP 3 --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_SetCounterText"
-    sudo ./idll-test.exe --LOOP 3 --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_SetCounterText
+    launch_command "sudo ./idll-test.exe --sec-display-text adidl$all --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_SetCounterText"
+    compare_result "$result" "passed"
+#    print_command "sudo ./idll-test.exe --LOOP 3 --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_SetCounterText"
+#    sudo ./idll-test.exe --LOOP 3 --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_SetCounterText
 
     printcolor b "Counting with ID=$all ... "
     printcolor b "================================"
@@ -91,7 +93,8 @@ ShowTextCountValue_AllID(){
     printcolor y "Counting value= 1 "
     read -p "enter key to continue ... " continue
 
-    sudo ./idll-test.exe --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter
+    launch_command "sudo ./idll-test.exe --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter"
+    compare_result "$result" "passed"
 
   done
 }

@@ -129,15 +129,23 @@
 #  printf "$re"
 #
 #done
-i=0
+#i=0
+#while true; do
+#  ((i++))
+#  printf "loop=$i"
+#  re1=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness [ADiDLL][DO][Brightness])
+#  re2=$(sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED)
+#  if [[ "$re1" =~ "failed" || "$re2" =~ "failed"  ]]; then
+#      printf $re1
+#      printf $re2
+#  fi
+#
+#done
 while true; do
-  ((i++))
-  printf "loop=$i"
-  re1=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness [ADiDLL][DO][Brightness])
-  re2=$(sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED)
-  if [[ "$re1" =~ "failed" || "$re2" =~ "failed"  ]]; then
-      printf $re1
-      printf $re2
-  fi
+  for i in $(seq 0 10 100);do
+    echo "$i"
+    sudo ./idll-test.exe --LED_NUM 0 --BRIGHTNESS "$i" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness_with_parameter [ADiDLL][DO][Brightness]
+#    sleep 2
 
+  done
 done
