@@ -37,7 +37,7 @@ alarm_compare_set_get(){
 
     #transfer alarm time/ now pic rtc time to seconds , and then minor both value to confirm the difference if it is the same as setting amount seconds
     #==============================================================================
-    time=$(($(date +%s -d "$Alarm_get_time") - $(date +%s -d "$RTCtime")))
+#    time=$(($(date +%s -d "$Alarm_get_time") - $(date +%s -d "$RTCtime")))
 
     if [[ "$alarm_set_time" == "$alarm_get_time" ]]; then
       printcolor g "RTC alarm time setting is correct !!"
