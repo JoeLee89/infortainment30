@@ -14,14 +14,14 @@ elif [ "$m" == "i" ]; then
   echo "bad"
 fi
 
-#bank=$(sudo ./idll-test.exe --SOURCE_BANK 0x0 --DEST_BANK 0x1 --ADDRESS 0x0 --LENGTH 0x1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SramBankCompareManual | grep -i "sram bank" | sed 's/SRAM Bank\[Number:Size\]\=\[0x//g' | sed 's/:0x[0-9]*]//g' | sed 's/\s//g')
+#bank=$(sudo ./idll-test.exe --SOURCE_BANK 0x0 --DEST_BANK 0x1 --ADDRESS 0x0 --LENGTH 0x1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SramBankCompareManual | grep -i "sram bank" | sed 's/SRAM Bank\[Number:Size\]\=\[0x//g' | sed 's/:0x[0-9]*]//g' | sed 's/\s//g')
   #display each bank capacity in hex unit
-#  bank_capacity_hex=$(sudo ./idll-test.exe --SOURCE_BANK 0x0 --DEST_BANK 0x1 --ADDRESS 0x0 --LENGTH 0x1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SramBankCompareManual | grep -i "sram bank" | sed 's/SRAM Bank\[Number:Size\]\=\[0x//g' | sed 's/[0-9]:0x//g' | sed 's/\]//g' | sed 's/\s//g')
+#  bank_capacity_hex=$(sudo ./idll-test.exe --SOURCE_BANK 0x0 --DEST_BANK 0x1 --ADDRESS 0x0 --LENGTH 0x1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SramBankCompareManual | grep -i "sram bank" | sed 's/SRAM Bank\[Number:Size\]\=\[0x//g' | sed 's/[0-9]:0x//g' | sed 's/\]//g' | sed 's/\s//g')
 #  bank_capacity_hex=80000
   bank_capacity_hex=
 
 
-#  bank_amount=$(sudo ./idll-test.exe --SOURCE_BANK 0x0 --DEST_BANK 0x1 --ADDRESS 0x0 --LENGTH 0x1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SramBankCompareManual | grep -i "sram bank" | sed 's/SRAM Bank\[Number:Size\]\=\[0x//g' | sed 's/\s//g')
+#  bank_amount=$(sudo ./idll-test.exe --SOURCE_BANK 0x0 --DEST_BANK 0x1 --ADDRESS 0x0 --LENGTH 0x1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SramBankCompareManual | grep -i "sram bank" | sed 's/SRAM Bank\[Number:Size\]\=\[0x//g' | sed 's/\s//g')
 
 
 #  #display how many bank
@@ -41,8 +41,8 @@ fi
 
 
   #display sram capacity in dec unit
-#  address=$( sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Capacity | grep -i 'size' | sed 's/SRAM size: //g' | sed 's/\/r//g')
-  address=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Capacity | grep -i 'SRAM size' | sed 's/SRAM size: //g' | sed 's/\/r//g' | sed 's/\s//g' |sed 's/]//g')
+#  address=$( sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SRAM_Capacity | grep -i 'size' | sed 's/SRAM size: //g' | sed 's/\/r//g')
+  address=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SRAM_Capacity | grep -i 'SRAM size' | sed 's/SRAM size: //g' | sed 's/\/r//g' | sed 's/\s//g' |sed 's/]//g')
 
   #display sram capacity in dec unit
 #  address=$(echo ${address:0:8})

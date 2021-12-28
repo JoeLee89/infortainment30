@@ -8,6 +8,20 @@ COLOR_BLUE_WD='\e[0;36m'
 COLOR_YELLOW_WD='\e[93m'
 COLOR_GREEN_WD='\e[32m'
 
+for i in "BSEC_BACC" "LEC1" "SC1X"; do
+  board_init=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$i" --section adiLibInit)
+  if [[ "$board_init" =~ "detected" ]]; then
+    board=$i
+    echo "good"
+  fi
+done
+
+#board="BSEC_BACC"
+#board="LEC1"
+#board="SC1X"
+
+
+
 launch_command() {
   print_command "$1"
   result=$($1)
@@ -349,7 +363,7 @@ confirm_pic_message() {
     ;;
   esac
 
-  pic_log_filter_amount=$(sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX 255 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC] | grep -i "total number" | sed "s/\s//g" | sed "s/[A-Za-z]//g" | sed "s/://g")
+  pic_log_filter_amount=$(sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX 255 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC] | grep -i "total number" | sed "s/\s//g" | sed "s/[A-Za-z]//g" | sed "s/://g")
 
   #confirm if index parameter is set to all, meaning it needs to loop each result to check if it includes all supported type
   if [ "$3" == "all" ]; then
@@ -377,11 +391,11 @@ confirm_pic_message() {
 
       #if $2 has unread , it needs to set search index always as 0, due to the total amount of unread will be reduced, once it has been read before.
       if [[ "$2" =~ "unread" ]]; then
-        print_command "sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "0" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC]"
-        result=$(sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "0" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC])
+        print_command "sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "0" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC]"
+        result=$(sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "0" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC])
       else
-        print_command "sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "$i" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC]"
-        result=$(sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "$i" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC])
+        print_command "sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "$i" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC]"
+        result=$(sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "$i" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC])
       fi
 
       if [[ "$1" != "any" && "$4" == "check" ]]; then
@@ -429,8 +443,8 @@ confirm_pic_message() {
 
   elif [[ "$3" != "255" ]]; then
     index=$3
-    print_command "sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "$index" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC]"
-    result=$(sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "$index" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC])
+    print_command "sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "$index" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC]"
+    result=$(sudo ./idll-test.exe --EVENT_TYPE "$type" --EVENT_STATUS "$status" --EVENT_INDEX "$index" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_adiEventGetWithFilter_Manu [ADiDLL][PIC])
     #    date_time_prepare "reset"
 
     if [[ "$1" == "power" && "$4" == "check" ]]; then
@@ -471,7 +485,7 @@ confirm_pic_message() {
 
 }
 pic_time() {
-  pic_time=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_RTC_GETCLOCK | grep -i "clock" | sed 's/PICRTClock: PIC RTClock: //g' | sed 's/\//-/g')
+  pic_time=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_RTC_GETCLOCK | grep -i "clock" | sed 's/PICRTClock: PIC RTClock: //g' | sed 's/\//-/g')
   pic_time=$(date -d "$pic_time" +%s)
 }
 
@@ -484,7 +498,7 @@ pic_rtc_sync() {
   now_min=$(date '+%M')
   now_sec=$(date '+%S')
   #sync up RTC with pIC time
-  sudo ./idll-test.exe --pic-time "$now_year/$now_month/$now_day/$now_hour/$now_min/$now_sec" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_RTC
+  sudo ./idll-test.exe --pic-time "$now_year/$now_month/$now_day/$now_hour/$now_min/$now_sec" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_RTC
 }
 
 #setting pic time as pc rtc time/ input the warning or low battery voltage in the parameter for future function usage

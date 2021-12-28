@@ -5,8 +5,8 @@ source ./common_func.sh
 #===============================================================
 SecMeterFeature(){
   title b "Secmeter feature test"
-  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_New"
-  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_New
+  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_New"
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_New
 }
 
 #===============================================================
@@ -14,8 +14,8 @@ SecMeterFeature(){
 #===============================================================
 SecMeterBitpattern(){
   title b "Secmeter bitpattern test"
-  print_command "sudo ./idll-test.exe --sec-pattern 1,2,3,4,5,6,7 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_BitPattern"
-  sudo ./idll-test.exe --sec-pattern 1,2,3,4,5,6,7 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_BitPattern
+  print_command "sudo ./idll-test.exe --sec-pattern 1,2,3,4,5,6,7 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_BitPattern"
+  sudo ./idll-test.exe --sec-pattern 1,2,3,4,5,6,7 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_BitPattern
 }
 
 #===============================================================
@@ -29,8 +29,8 @@ SecMeterCycleCounter(){
     read -p "sec-counter-num:" num
     time=$((num*8000))
 
-    print_command "sudo ./idll-test.exe --sec-counter-num $num --sec-reserve-time $time -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_Cycle"
-    sudo ./idll-test.exe --sec-counter-num $num --sec-reserve-time $time -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_Cycle
+    print_command "sudo ./idll-test.exe --sec-counter-num $num --sec-reserve-time $time -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_Cycle"
+    sudo ./idll-test.exe --sec-counter-num $num --sec-reserve-time $time -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_Cycle
     read -p "[q] to exit loop test, or enter key to loop test" input
     if [ "$input" == "q" ]; then
         break
@@ -53,8 +53,8 @@ SecMeterCount_NoId(){
       read -p "" continue
 
     fi
-    print_command "sudo ./idll-test.exe --sec-increment-value $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter"
-    sudo ./idll-test.exe --sec-increment-value $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter
+    print_command "sudo ./idll-test.exe --sec-increment-value $all -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter"
+    sudo ./idll-test.exe --sec-increment-value $all -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter
 
   done
 }
@@ -67,8 +67,8 @@ SecMeterShowText_Noid(){
   printcolor w "TEXT= adlink9 "
 
   read -p "enter key to continue ... " continue
-  print_command "sudo ./idll-test.exe --sec-display-text adlink9 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_Display"
-  sudo ./idll-test.exe --sec-display-text adlink9 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_Display
+  print_command "sudo ./idll-test.exe --sec-display-text adlink9 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_Display"
+  sudo ./idll-test.exe --sec-display-text adlink9 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_Display
 }
 
 #===============================================================
@@ -82,10 +82,10 @@ ShowTextCountValue_AllID(){
     printcolor y "TEXT= adidl$all "
     read -p "enter key to continue ... " continue
 
-    launch_command "sudo ./idll-test.exe --sec-display-text adidl$all --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_SetCounterText"
+    launch_command "sudo ./idll-test.exe --sec-display-text adidl$all --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_SetCounterText"
     compare_result "$result" "passed"
-#    print_command "sudo ./idll-test.exe --LOOP 3 --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_SetCounterText"
-#    sudo ./idll-test.exe --LOOP 3 --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter_SetCounterText
+#    print_command "sudo ./idll-test.exe --LOOP 3 --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_SetCounterText"
+#    sudo ./idll-test.exe --LOOP 3 --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter_SetCounterText
 
     printcolor b "Counting with ID=$all ... "
     printcolor b "================================"
@@ -93,7 +93,7 @@ ShowTextCountValue_AllID(){
     printcolor y "Counting value= 1 "
     read -p "enter key to continue ... " continue
 
-    launch_command "sudo ./idll-test.exe --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter"
+    launch_command "sudo ./idll-test.exe --sec-counter-id $all -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter"
     compare_result "$result" "passed"
 
   done

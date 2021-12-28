@@ -17,17 +17,17 @@ SetPort() {
   title b "All LED setport test"
 
   for i in ${num[*]}; do
-#    launch_command "sudo ./idll-test.exe --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPort"
-    print_command "sudo ./idll-test.exe --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPort"
+#    launch_command "sudo ./idll-test.exe --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPort"
+    print_command "sudo ./idll-test.exe --PORT_VAL $i -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPort"
 
-    result=$(sudo ./idll-test.exe --PORT_VAL "$i" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPort)
+    result=$(sudo ./idll-test.exe --PORT_VAL "$i" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPort)
     echo "$result"
     result=$(echo "$result" | grep -i "Port value:" | sed 's/\r//g')
     compare_result "$result" "Port value: $i"
     sleep 2
   done
 
-  reset=$(sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPort)
+  reset=$(sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPort)
 }
 
 #===============================================================
@@ -38,8 +38,8 @@ SetPin() {
   read -p "enter key to continue..."
 
   for all in $(seq 0 2); do
-    print_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPin"
-    result=$(sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPin)
+    print_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPin"
+    result=$(sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPin)
     echo "$result"
     result1=$(echo "$result" | grep -i "Pin number:" | sed 's/\r//g' )
     result2=$(echo "$result" | grep -i "Pin value: 1" | sed 's/\r//g' )
@@ -47,8 +47,8 @@ SetPin() {
     compare_result "$result2" "Pin value: 1"
     sleep 2
 
-    print_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPin"
-    result=$(sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPin)
+    print_command "sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPin"
+    result=$(sudo ./idll-test.exe --PIN_NUM $all --PIN_VAL false -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPin)
     echo "$result"
     result1=$(echo "$result" | grep -i "Pin number:" | sed 's/\r//g' )
     result2=$(echo "$result" | grep -i "Pin value: 0" | sed 's/\r//g' )
@@ -86,9 +86,9 @@ Blink() {
   title b "Reset blinking function...   reset all port to high, before test... "
 
   for (( i = 0; i < led_amount; i++ )); do
-    launch_command "sudo ./idll-test --PIN_NUM 0 --PERIOD 1 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+    launch_command "sudo ./idll-test --PIN_NUM 0 --PERIOD 1 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
   done
-  launch_command "sudo ./idll-test.exe --PORT_VAL 7 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPort"
+  launch_command "sudo ./idll-test.exe --PORT_VAL 7 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPort"
 
   #######################################
   #Change DUTY CYCLE value
@@ -103,7 +103,7 @@ Blink() {
       printf "${COLOR_BLUE_WD}period (SCxx/SA3 : 0/1=disable blinking): $period = $scxx ms ${COLOR_REST}\n"
       read -p "enter key to continue above test..." continue
 
-      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD $period --DUTY_CYCLE $duty_cyclell -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD $period --DUTY_CYCLE $duty_cyclell -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
       if [[ "$result" =~ "failed" && "$result" =~ "nReadDutyCycle == nDutyCycle" && "$result" =~ "Duty cycle: $duty_cyclell" ]]; then
         printcolor g "============================================"
         printcolor g "Result PASS include : Duty cycle: $duty_cyclell"
@@ -141,7 +141,7 @@ Blink() {
 
       read -p "Enter to continue above test..."
 
-      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD $perioddd --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+      launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD $perioddd --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
       if [[ "$result" =~ "failed" && "$result" =~ "nReadDutyCycle == nDutyCycle" && "$result" =~ "Period: $perioddd" ]]; then
         printcolor g "============================================"
         printcolor g "Result PASS include : Period: $perioddd"
@@ -166,14 +166,14 @@ Blink() {
     printcolor r "(SCxx/SA3) LED: $all should be back to solid on as it's set port before ..."
     printcolor r "(LEC1) LED: $all won't keep its original state, it on/off randomly ..."
     read -p "Enter to test..."
-    launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD 1 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+    launch_command "sudo ./idll-test.exe --PIN_NUM $all --PERIOD 1 --DUTY_CYCLE 99 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
 
   done
 
 
   title b "All LED should be OFF"
   read -p "Enter to continue..."
-  launch_command "sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPort"
+  launch_command "sudo ./idll-test.exe --PORT_VAL 0 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPort"
 }
 
 
@@ -189,9 +189,9 @@ disabling_blinking_muti_condition(){
     "setpin")
       for i in "true" "false" ; do
 
-        launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD $period --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+        launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD $period --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
         title r "If the following script has error, please make sure the project supports BRIGHTNESS function."
-        launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS $brightness -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
+        launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS $brightness -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
 
 
         case $i in
@@ -200,7 +200,7 @@ disabling_blinking_muti_condition(){
           printcolor y "Make sure it won't be blinking and should keep solid on."
           printcolor w "Enter to test."
           read -p ""
-          launch_command "sudo ./idll-test.exe --PIN_NUM $led --PIN_VAL $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPin"
+          launch_command "sudo ./idll-test.exe --PIN_NUM $led --PIN_VAL $i -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPin"
           read -p ""
         ;;
 
@@ -209,7 +209,7 @@ disabling_blinking_muti_condition(){
           printcolor y "Make sure it won't be blinking and should keep OFF."
           printcolor w "Enter to test."
           read -p ""
-          launch_command "sudo ./idll-test.exe --PIN_NUM $led --PIN_VAL $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPin"
+          launch_command "sudo ./idll-test.exe --PIN_NUM $led --PIN_VAL $i -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPin"
           read -p ""
         ;;
         esac
@@ -219,9 +219,9 @@ disabling_blinking_muti_condition(){
     "brightness")
       for i in "true" "false" ; do
 
-        launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD $period --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+        launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD $period --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
         title r "If the following script has error, please make sure the project supports BRIGHTNESS function."
-        launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS $brightness -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
+        launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS $brightness -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
 
         case $i in
         "true")
@@ -229,7 +229,7 @@ disabling_blinking_muti_condition(){
           printcolor y "Make sure it won't be blinking and should keep solid on."
           printcolor w "Enter to test."
           read -p ""
-          launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS 99 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
+          launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS 99 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
           read -p ""
         ;;
 
@@ -238,7 +238,7 @@ disabling_blinking_muti_condition(){
           printcolor y "Make sure it won't be blinking and should keep OFF."
           printcolor w "Enter to test."
           read -p ""
-          launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
+          launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS 0 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
           read -p ""
         ;;
         esac
@@ -256,7 +256,7 @@ repeat_blink(){
     random_period=$(shuf -i 2-10000 -n 1)
     random_duty=$(shuf -i 1-99 -n 1)
     random_pin=$(shuf -i 0-$(($1-1)) -n 1)
-    launch_command "sudo ./idll-test.exe --PIN_NUM $random_pin --PERIOD $random_period --DUTY_CYCLE $random_duty -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+    launch_command "sudo ./idll-test.exe --PIN_NUM $random_pin --PERIOD $random_period --DUTY_CYCLE $random_duty -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
     if [[ "$result" =~ "failed" && "$result" =~ "nReadDutyCycle == nDutyCycle"  ]]; then
       printcolor g "============================================"
       printcolor g "Result: PASS"
@@ -280,7 +280,7 @@ All_blink(){
   read -p "" amount
 
   for (( i = 0; i < amount; i++ )); do
-    launch_command "sudo ./idll-test.exe --PIN_NUM $i --PERIOD 100 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+    launch_command "sudo ./idll-test.exe --PIN_NUM $i --PERIOD 100 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
   done
 
   while true ; do
@@ -291,7 +291,7 @@ All_blink(){
     if [ "$input" == "x" ]; then
 
       for (( x = 0; x < amount; x++ )); do
-        launch_command "sudo ./idll-test.exe --PIN_NUM $x --PERIOD 0 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+        launch_command "sudo ./idll-test.exe --PIN_NUM $x --PERIOD 0 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
       done
       return
     fi
@@ -329,8 +329,8 @@ Brightness(){
 
       printcolor w "Enter to test brightness setting."
       read -p ""
-      launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD $period --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
-      launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS $brightness_value -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
+      launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD $period --DUTY_CYCLE $duty_cycle -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+      launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS $brightness_value -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
       compare_result "$result" "Brightness: $brightness_value"
     done
   done
@@ -342,8 +342,8 @@ Brightness_loop(){
   for all in $(seq 0 100); do
     value=$(shuf -i 0-100 -n 1)
     led=$(shuf -i 0-3 -n 1)
-    launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS $value -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
-#    launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD 100 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+    launch_command "sudo ./idll-test.exe --PIN_NUM $led --BRIGHTNESS $value -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_Brightness_with_parameter [ADiDLL][HCO3A][PWM][POC]"
+#    launch_command "sudo ./idll-test.exe --PIN_NUM $led --PERIOD 100 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
     compare_result "$result" "$value"
 
   done
@@ -356,15 +356,15 @@ Brightness_loop(){
 BadParameter() {
   title b "Bad parameter test"
   read -p "enter key to continue..."
-  launch_command "sudo ./idll-test.exe --PIN_NUM 999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPin"
+  launch_command "sudo ./idll-test.exe --PIN_NUM 999999999 --PIN_VAL true -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPin"
   compare_result "$result" "failed"
-  launch_command "sudo ./idll-test.exe --PIN_NUM 1 --PIN_VAL gsf -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPin"
+  launch_command "sudo ./idll-test.exe --PIN_NUM 1 --PIN_VAL gsf -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPin"
   compare_result "$result" "failed"
-  launch_command "sudo ./idll-test.exe --PORT_VAL 66666666666666666 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED_SetPort"
+  launch_command "sudo ./idll-test.exe --PORT_VAL 66666666666666666 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED_SetPort"
   compare_result "$result" "failed"
-  launch_command "sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 50 --DUTY_CYCLE 1001 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+  launch_command "sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 50 --DUTY_CYCLE 1001 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
   compare_result "$result" "failed"
-  launch_command "sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 10001 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
+  launch_command "sudo ./idll-test.exe --PIN_NUM 0 --PERIOD 10001 --DUTY_CYCLE 50 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_HCO3A_PWM [ADiDLL][HCO3A][PWM][POC]"
   compare_result "$result" "failed"
 
 }

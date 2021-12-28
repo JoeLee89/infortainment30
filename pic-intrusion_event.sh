@@ -9,8 +9,8 @@ IntruGetPort() {
   title b "Check intrusion port by getport"
 
   while true; do
-    print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_Intrusion_ports"
-    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_Intrusion_ports
+    print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_Intrusion_ports"
+    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_Intrusion_ports
 
     read -p "q to exit " leave
     if [ "$leave" == "q" ]; then
@@ -27,8 +27,8 @@ IntruGetEvent() {
   title b "Now check PIC intrution event from PIC even log"
 
   while true; do
-    print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_GetPICEvent_and_DisplayEventTime"
-    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_GetPICEvent_and_DisplayEventTime
+    print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_GetPICEvent_and_DisplayEventTime"
+    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_GetPICEvent_and_DisplayEventTime
 
     read -p "Enter to test again, or press [q] to exit " leave
     if [ "$leave" == "q" ]; then
@@ -43,8 +43,8 @@ IntruGetEvent() {
 #===============================================================
 IntruCallback_Auto() {
   title b "Now check PIC intrusion call back function auto test"
-  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_Intrusion_Auto [CALLBACK][PIC][UNITTEST]"
-  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_Intrusion_Auto [CALLBACK][PIC][UNITTEST]
+  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Callback_PIC_Intrusion_Auto [CALLBACK][PIC][UNITTEST]"
+  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Callback_PIC_Intrusion_Auto [CALLBACK][PIC][UNITTEST]
 }
 
 #===============================================================
@@ -77,8 +77,8 @@ IntruCallback_Manual_3Mode() {
 
       printf "${COLOR_BLUE_WD}trigger mode = ${COLOR_YELLOW_WD}$i ${COLOR_REST}\n"
       printf "${COLOR_BLUE_WD}=============================================== ${COLOR_REST}\n"
-      print_command "sudo ./idll-test.exe --pic-cb-intr-pinmask $target_dec --pic-cb-intr-event $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]"
-      sudo ./idll-test.exe --pic-cb-intr-pinmask $target_dec --pic-cb-intr-event $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]
+      print_command "sudo ./idll-test.exe --pic-cb-intr-pinmask $target_dec --pic-cb-intr-event $i -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]"
+      sudo ./idll-test.exe --pic-cb-intr-pinmask $target_dec --pic-cb-intr-event $i -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]
 
   done
   mask_setting "1" "$input"
@@ -89,8 +89,8 @@ IntruCallback_Manual_3Mode() {
 
       printf "${COLOR_BLUE_WD}trigger mode = ${COLOR_YELLOW_WD}$i ${COLOR_REST}\n"
       printf "${COLOR_BLUE_WD}=============================================== ${COLOR_REST}\n"
-      print_command "sudo ./idll-test.exe --pic-cb-intr-pinmask $target_dec --pic-cb-intr-event $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]"
-      sudo ./idll-test.exe --pic-cb-intr-pinmask $target_dec --pic-cb-intr-event $i -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]
+      print_command "sudo ./idll-test.exe --pic-cb-intr-pinmask $target_dec --pic-cb-intr-event $i -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]"
+      sudo ./idll-test.exe --pic-cb-intr-pinmask $target_dec --pic-cb-intr-event $i -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]
 
   done
 
@@ -98,7 +98,7 @@ IntruCallback_Manual_3Mode() {
   printf "${COLOR_BLUE_WD}Now pinmask set ${COLOR_YELLOW_WD}0000 0000 ${COLOR_BLUE_WD}PIC intrusion availble ${COLOR_REST}\n"
   printf "${COLOR_BLUE_WD}trigger mode =  ${COLOR_YELLOW_WD}OPEN_OR_CLOSE ${COLOR_REST}\n"
   printf "${COLOR_BLUE_WD}================================================= ${COLOR_REST}\n"
-  launch_command "sudo ./idll-test.exe --pic-cb-intr-pinmask 0 --pic-cb-intr-event OPEN_OR_CLOSE -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]"
+  launch_command "sudo ./idll-test.exe --pic-cb-intr-pinmask 0 --pic-cb-intr-event OPEN_OR_CLOSE -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Callback_PIC_Intrusion_Manu [CALLBACK][PIC][MANU]"
   compare_result "$result" "failed"
 }
 

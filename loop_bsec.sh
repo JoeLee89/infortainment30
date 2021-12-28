@@ -5,17 +5,17 @@
 # ===== General =====
 # Test API : adiLibGetErrorString(EERROR Code, char* ErrorString, size_t Length);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Error_String_Message
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Error_String_Message
 
 
 # Test API : adiLibInit(EBOARD_TYPE BoardType);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section adiLibInit
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section adiLibInit
 
 
 # Test API : adiLibGetSystemInfo(SystemInfo* SysInfo);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SYS_Info
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SYS_Info
 
 
 # ===== User LED =====
@@ -28,8 +28,8 @@ sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SYS_Info
 # Test API : adiUserLedMainboardSetPort(uint64_t PortValue);
 # Test API : adiUserLedMainboardSetPin(uint8_t BitId, bool Value);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section User_LED
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section User_LED
+sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section User_LED
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section User_LED
 
 
 # ===== HighCurrent_LED =====
@@ -38,8 +38,8 @@ sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section User_LED
 # Test API : adiHcoSetPort(uint64_t PortValue);
 # Test API : adiHcoSetPin(uint8_t BitId, bool Value);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED
+sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HighCurrent_LED
 
 
 # ===== DIO =====
@@ -50,30 +50,30 @@ sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HighCurrent_LED
 # Test API : adiDoSetPort(uint64_t PortValue);
 # Test API : adiDoSetPin(uint8_t BitId, bool Value);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED
+sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPO_LED
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPO_LED
 
 # Test API : adiDiGetPort(uint64_t* PortValue);
 # Test API : adiDiGetPin(uint8_t BitId, bool* Value);
 # Test API : adiDiSetDebounceFilter(uint64_t BitMask, uint16_t DebounceValue); // not support yet in 3.x
 # Test API : adiDiGetDebounceFilter(uint8_t BitId, uint16_t* DebounceValue); // not support yet in 3.x
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_Button
+#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPI_Button
 
 # Test API : adiDipSwitchBackplaneGetPort(uint64_t* PortValue); // BACC_DIPSWITCH
 # Test API : adiDipSwitchBackplaneGetPin(uint8_t BitId, bool* Value);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_User_DIP_SW
+#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPI_User_DIP_SW
 
 # Test API : adiDipSwitchMainboardGetPort(uint64_t* PortValue); // need to be added
 # Test API : adiDipSwitchMainboardGetPin(uint8_t BitId, bool* Value); // need to be added
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_Mainboard_DIP_SW
+#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPI_Mainboard_DIP_SW
 
 # Test API : adiBaccFsGetPort(uint64_t* PortValue); // BACC_FS1_FS2 // For BACC only // need to be added
 # Test API : adiBaccFsGetPin(uint8_t BitId, bool* Value); // For BACC only // need to be added
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPI_BACC_FS
+#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPI_BACC_FS
 
 # ===== LED PCA9626 Driver =====
 # Test API : adiLedSetBrightness(uint32_t BitMask, uint8_t Brightness)
@@ -85,7 +85,7 @@ sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED
 # Test API : adiLedSetPin(uint8_t BitId, bool Value)
 # Test API : adiLedGetPin(uint8_t BitId, bool *Value)
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_Drive
+sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPO_LED_Drive
 
 
 # ===== EEPROM =====
@@ -93,28 +93,28 @@ sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED
 # Test API : adiEepromWrite(uint8_t Index, uint32_t Address, const uint8_t* Buffer, size_t Length);
 # Test API : adiEepromGetSize(uint8_t Index, uint32_t* Size);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section EEPROM_Auto
+sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section EEPROM_Auto
 
 
 # ===== Ext I2C =====
 # Test API : adiI2cExec(uint8_t Address, const uint8_t* OutBuffer, size_t OutBufLen, uint8_t* InBuffer, size_t* InBufLen);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe --LOOP 1 --SLAVE_ADDR 0x51 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section ExtI2C
+sudo ./idll-test.exe --LOOP 1 --SLAVE_ADDR 0x51 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section ExtI2C
 
 
 # ===== Ext SPI =====
 # Test API : adiSpiInit(ESPI_BUS Bus, uint8_t Mode);
 # Test API : adiSpiExec(ESPI_BUS Bus, uint8_t* OutBuffer, size_t OutBufLen, uint8_t* InBuffer, size_t InBufLen);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe --LOOP 2 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Ext_SPI_RDID_REMS
+sudo ./idll-test.exe --LOOP 2 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Ext_SPI_RDID_REMS
 
 
 # ===== Crypto =====
 # Test API : adiCryptoGetSerial(char* Buffer, size_t Length);
 # Test API : adiCryptoSendCmd(uint8_t Address, uint8_t Command, uint8_t* Buffer, size_t* DataLen, size_t BufferLen);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo ./idll-test.exe --LOOP 2 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Crypto
-#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Crypto_SHA
+#sudo ./idll-test.exe --LOOP 2 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Crypto
+#sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Crypto_SHA
 
 
 # ===== Hard Meter =====
@@ -127,45 +127,45 @@ sudo ./idll-test.exe --LOOP 2 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Ext_SPI
 # The test HardMeter_BACC_SetPort expects the (max 8) hardmeters connected to Hardmeter Pin 0-7 and Out Pin 24-31!
 # To test all 8 hardmeters set PORT_VAL to 255 (0xFF)
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#sudo ./idll-test.exe --PORT_VAL 255 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section HardMeter_BACC_SetPort
+#sudo ./idll-test.exe --PORT_VAL 255 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section HardMeter_BACC_SetPort
 
 
 # ===== SecMeter =====
 # Test API : adiSecShowCounterValue(uint8_t CounterId);
 # Test API : adiSecIncrementCounterValue(uint8_t CounterId, uint16_t IncrementValue);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe --LOOP 2 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SecMeter
+sudo ./idll-test.exe --LOOP 2 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SecMeter
 
 
 # ===== PIC =====
 # Test API : adiLibGetSystemInfo(SystemInfo* SysInfo);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_Firmware_Version
-#sudo ./idll-test.exe --pic-fw 261  -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_Firmware_Version
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_Firmware_Version
+#sudo ./idll-test.exe --pic-fw 261  -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_Firmware_Version
 
 # Add "-s" will display success test case message ==
 # Test API : adiRtcCalibrate(int8_t Value);
 # Test API : adiRtcGetTime(Time* Time);
 # Test API : adiRtcSetTime(const Time* Time);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe --pic-time 2019/04/13/01/02/03 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_RTC
+sudo ./idll-test.exe --pic-time 2019/04/13/01/02/03 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_RTC
 
 # Move PIC_RTC(without assigned date time) after PIC_RTC(WITH assigned date time) to prevent Day Light Saving problem with different 'time zone'.
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_RTC_GETCLOCK
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_RTC
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_RTC_GETCLOCK
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_RTC
 
 # Test API : adi1wireSearchAllDevices(uint8_t* DevicesCount);
 # Test API : adi1wireGetUniqueId(uint8_t Index, char* Buffer, size_t Length);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_IDs
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_1Wire_IDs
 
 # Test API : adi1wireEepromRead(uint8_t Index, uint32_t Address, uint8_t* Buffer, size_t Length);
 # Test API : adi1wireEepromWrite(uint8_t Index, uint32_t Address, const uint8_t* Buffer,size_t Length);
 # Test API : adi1wireEepromGetSize(uint8_t Index, uint32_t* Size);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Same_Pattern_0xA5
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Random_Pattern
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_1Wire_EEPROM_Same_Pattern_0xA5
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_1Wire_EEPROM_Random_Pattern
 
 # Test API : adiBatGenerateEvent(void);
 # Test API : adiBatSetWarningVoltage(const Batteries* Voltages);
@@ -178,18 +178,18 @@ sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM
 # Test API : adiEnableBatteryLowEvent(uint8_t interval, uint16_t pinMask, void (*CallbackFunction)(const Event PicEvent, uint16_t triggeredPinMask));
 # Test API : adiDisableBatteryLowEvent(uint16_t pinMask);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
 
 
 # ===== SRAM =====
 # Test API : adiSramGetSize(uint32_t* Size);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Capacity
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SRAM_Capacity
 
 # Test API : adiSramRead(uint32_t Address, uint8_t* Buffer, size_t Length);
 # Test API : adiSramWrite(uint32_t Address, const uint8_t* Buffer, size_t Length);
 # Test API : adiSramGetBankInformation( uint32_t *Number, uint32_t *Size);
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Same_Pattern_0xA5
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Random_Pattern
-sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SRAM_Performance
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SRAM_Same_Pattern_0xA5
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SRAM_Random_Pattern
+sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SRAM_Performance

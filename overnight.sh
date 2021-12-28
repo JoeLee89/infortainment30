@@ -16,12 +16,12 @@ start_time=0
 others_script=0
 
 other() {
-  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 "Scenario: adiWatchdogSetSystemRestart" -s"
+  print_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" "Scenario: adiWatchdogSetSystemRestart" -s"
 
-  other=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 "Scenario: adiWatchdogSetSystemRestart" -s)
+  other=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" "Scenario: adiWatchdogSetSystemRestart" -s)
   echo "$other"
   echo "================================================================================================" >> result.log
-  echo "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 "Scenario: adiWatchdogSetSystemRestart" -s" >> result.log
+  echo "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" "Scenario: adiWatchdogSetSystemRestart" -s" >> result.log
   echo "================================================================================================" >> result.log
   echo "$other" >> result.log
 }

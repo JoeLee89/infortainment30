@@ -367,13 +367,13 @@ battery_alarm_event() {
     confirm_pic_message "any" "newest_unread" "all" ""
     title b "Now test function from [$ii] order"
     title b "Now set up battery alarm setting to trigger RTC alarm."
-    print_command "sudo ./idll-test.exe --pic-batteries-voltage "33,33,33" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU]"
-    sudo ./idll-test.exe --pic-batteries-voltage "33,33,33" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU]
+    print_command "sudo ./idll-test.exe --pic-batteries-voltage "33,33,33" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU]"
+    sudo ./idll-test.exe --pic-batteries-voltage "33,33,33" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section BatSetGetLowVoltageManual [PIC][BATTERY][MANU]
 
     title r "***Now to adjust one of the battery voltage=3.0v. Press enter key, when you finish.***"
     read -p ""
     #reset PIC battery warning behavior by rechecking the pic battery voltage.
-    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_Battery_PICEventByType
+    sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_Battery_PICEventByType
 
     title r "***Now adjust one of the battery voltage=2.8v. This will make PIC trigger the battery event.***"
     read -p "Press enter key, when you finish adjusting the battery voltage by DC source"
@@ -433,7 +433,7 @@ rtc_alarm_event() {
     title b "Now test function from [$ii] order"
     title b "Now trigger PIC RTC alarm for 5 times:"
     for ((i = 0; i < 5; i++)); do
-      sudo ./idll-test.exe --pic-alarm_seconds 2 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_RTC_ALARM_SET_manual [PIC][RTC][ALARM][MANUAL]
+      sudo ./idll-test.exe --pic-alarm_seconds 2 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_RTC_ALARM_SET_manual [PIC][RTC][ALARM][MANUAL]
       printcolor y "Wait 2 second for RTC alarm trigger...."
       sleep 3
     done
@@ -480,7 +480,7 @@ rtc_alarm_event() {
 #===============================================================
 
 queue_amount() {
-  launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section Callback_PIC_EventQueueFull_Auto [CALLBACK][PIC][UNITTEST]"
+  launch_command "sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section Callback_PIC_EventQueueFull_Auto [CALLBACK][PIC][UNITTEST]"
   compare_result "$result" "passed"
 }
 

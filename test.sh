@@ -1,13 +1,13 @@
 #!/bin/bash
 #i=0
 #while true; do
-##   sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_Battery_PICEventByType
-##  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section adiLibInit
-##  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
+##   sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_Battery_PICEventByType
+##  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section adiLibInit
+##  sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_GetPICEvent_and_CheckPICBatteryVoltage
 #  ((i++))
 #  echo "i=$i"
 #
-#  result=$(sudo ./idll-test.exe --ADDRESS 1319213 --LENGTH 4 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SramAsyncCalculateCRC32Manual)
+#  result=$(sudo ./idll-test.exe --ADDRESS 1319213 --LENGTH 4 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SramAsyncCalculateCRC32Manual)
 #  if [[ "$result" =~ "Callback data[CRC]" ]]; then
 #    printf "===========================================================pass"
 #
@@ -20,8 +20,8 @@
 
 
 #for (( i = 0; i < 15; i++ )); do
-#  start /B /wait idll-test --PIN_NUM $i --BLINK 5 --DUTY_CYCLE 31 --BRIGHTNESS 63 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_Drive_SetBlink
-##  start /B /wait idll-test --PIN_NUM $i --BLINK 5 --DUTY_CYCLE 31 --BRIGHTNESS 0 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED_Drive_SetBlink
+#  start /B /wait idll-test --PIN_NUM $i --BLINK 5 --DUTY_CYCLE 31 --BRIGHTNESS 63 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPO_LED_Drive_SetBlink
+##  start /B /wait idll-test --PIN_NUM $i --BLINK 5 --DUTY_CYCLE 31 --BRIGHTNESS 0 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPO_LED_Drive_SetBlink
 #done
 
 #for (( i = 1; i < 16777215; i++ )); do
@@ -61,8 +61,8 @@
 
 #echo "${result:0:2}"
 
-#a=$(sudo ./idll-test.exe --GPIO_PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SA3X_4xGPIO_by_Port | grep -i "adiGpioGetPort" |  sed 's/\\n//g' > test.txt)
-#a=$(sudo ./idll-test.exe --GPIO_PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SA3X_4xGPIO_by_Port > test.txt)
+#a=$(sudo ./idll-test.exe --GPIO_PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SA3X_4xGPIO_by_Port | grep -i "adiGpioGetPort" |  sed 's/\\n//g' > test.txt)
+#a=$(sudo ./idll-test.exe --GPIO_PORT_VAL 1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SA3X_4xGPIO_by_Port > test.txt)
 #a=$(cat test.txt)
 #echo "a=$a"
 #b="adiGpioGetPort(0x11)"
@@ -89,8 +89,8 @@
 #  for (( i = 0; i < 2 ; i++ )); do
 #    echo "====================================test time= $m===================================="
 #    echo "**********************************now read 1wire $i**********************************"
-#    sudo ./idll-test.exe --dallas-eeprom-write $i:0:$data -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_write
-#    result=$(sudo ./idll-test.exe --dallas-eeprom-read $i:0:$length -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section PIC_1Wire_EEPROM_Manual_read)
+#    sudo ./idll-test.exe --dallas-eeprom-write $i:0:$data -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_1Wire_EEPROM_Manual_write
+#    result=$(sudo ./idll-test.exe --dallas-eeprom-read $i:0:$length -- --EBOARD_TYPE EBOARD_ADi_"$board" --section PIC_1Wire_EEPROM_Manual_read)
 #    echo "$result"
 #
 #    echo "**********************************now compare 1wire $i data**********************************"
@@ -121,7 +121,7 @@
 #done
 #while true; do
 #
-#  re=$(sudo ./idll-test.exe --serial-port1 LEC1_COM1 --serial-port2 LEC1_COM2 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section SerialPort_Nullmodem)
+#  re=$(sudo ./idll-test.exe --serial-port1 LEC1_COM1 --serial-port2 LEC1_COM2 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section SerialPort_Nullmodem)
 #  if [[ "$re" =~ "failed" ]]; then
 #    read -p "got error log"
 #  fi
@@ -133,8 +133,8 @@
 #while true; do
 #  ((i++))
 #  printf "loop=$i"
-#  re1=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness [ADiDLL][DO][Brightness])
-#  re2=$(sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section GPO_LED)
+#  re1=$(sudo ./idll-test.exe -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_DO_Brightness [ADiDLL][DO][Brightness])
+#  re2=$(sudo ./idll-test.exe --LOOP 1 -- --EBOARD_TYPE EBOARD_ADi_"$board" --section GPO_LED)
 #  if [[ "$re1" =~ "failed" || "$re2" =~ "failed"  ]]; then
 #      printf $re1
 #      printf $re2
@@ -144,7 +144,7 @@
 while true; do
   for i in $(seq 0 10 100);do
     echo "$i"
-    sudo ./idll-test.exe --LED_NUM 0 --BRIGHTNESS "$i" -- --EBOARD_TYPE EBOARD_ADi_LEC1 --section LEC1_DO_Brightness_with_parameter [ADiDLL][DO][Brightness]
+    sudo ./idll-test.exe --LED_NUM 0 --BRIGHTNESS "$i" -- --EBOARD_TYPE EBOARD_ADi_"$board" --section LEC1_DO_Brightness_with_parameter [ADiDLL][DO][Brightness]
 #    sleep 2
 
   done
